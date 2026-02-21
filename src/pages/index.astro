@@ -462,13 +462,22 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			// 3. 构建时间轴
 			const tl = gsap.timeline({
 				onComplete: () => {
-					// 获取 BASE_URL (部署时为 '/FractalShelter/', 本地可能为 '/')
-					const base = import.meta.env.BASE_URL;
+					// 终极防弹方案：直接基于浏览器当前的真实 URL 进行解析
+					const currentUrl = new URL(window.location.href);
 
-					// 拼接路径，并把可能出现的双斜杠 '//' 替换为单斜杠 '/' 以防 404
-					const targetPath = `${base}/onboarding`.replace(/\/\/+/g, '/');
+					// 确保当前路径以 "/" 结尾，防止相对路径拼接时吃掉最后一层目录
+					// (比如把 /FractalShelter 变成 /FractalShelter/)
+					if (!currentUrl.pathname.endsWith('/')) {
+						currentUrl.pathname += '/';
+					}
 
-					// 使用 Astro 的 navigate 进行平滑跳转
+					// 基于当前实际路径，解析出 onboarding 的完整子路径
+					// 本地环境 "/": 自动变成 "/onboarding"
+					// 线上环境 "/FractalShelter/": 自动变成 "/FractalShelter/onboarding"
+					// 中文环境 "/FractalShelter/zh/": 自动变成 "/FractalShelter/zh/onboarding"
+					const targetPath = new URL('onboarding', currentUrl).pathname;
+
+					// 使用 Astro 的平滑跳转
 					navigate(targetPath);
 				}
 			});
