@@ -462,7 +462,14 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			// 3. 构建时间轴
 			const tl = gsap.timeline({
 				onComplete: () => {
-					navigate("./onboarding");
+					// 获取 BASE_URL (部署时为 '/FractalShelter/', 本地可能为 '/')
+					const base = import.meta.env.BASE_URL;
+
+					// 拼接路径，并把可能出现的双斜杠 '//' 替换为单斜杠 '/' 以防 404
+					const targetPath = `${base}/onboarding`.replace(/\/\/+/g, '/');
+
+					// 使用 Astro 的 navigate 进行平滑跳转
+					navigate(targetPath);
 				}
 			});
 
