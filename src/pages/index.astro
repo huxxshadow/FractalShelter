@@ -4,6 +4,8 @@ import "../styles/global.css";
 import { Icon } from 'astro-icon/components'
 import FractalLogo from '../components/FractalLogo.tsx';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const onboardingPath = getRelativeLocaleUrl('en', 'onboarding/');
 ---
 
 <Layout>
@@ -24,7 +26,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 
 
-	<div id="main-interface" class="min-h-screen w-full flex transition-opacity duration-300">
+	<div id="main-interface" data-target-url={onboardingPath} class="min-h-screen w-full flex transition-opacity duration-300">
 		<div class="w-1/3 min-w-[700px] bg-[#D00000] relative">
 
 
@@ -462,23 +464,12 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			// 3. 构建时间轴
 			const tl = gsap.timeline({
 				onComplete: () => {
-					// 终极防弹方案：直接基于浏览器当前的真实 URL 进行解析
-					const currentUrl = new URL(window.location.href);
+					// 直接从 DOM 上读取刚才注入的安全路径
+					const mainInterface = document.getElementById('main-interface');
+					const targetUrl = mainInterface.dataset.targetUrl;
 
-					// 确保当前路径以 "/" 结尾，防止相对路径拼接时吃掉最后一层目录
-					// (比如把 /FractalShelter 变成 /FractalShelter/)
-					if (!currentUrl.pathname.endsWith('/')) {
-						currentUrl.pathname += '/';
-					}
-
-					// 基于当前实际路径，解析出 onboarding 的完整子路径
-					// 本地环境 "/": 自动变成 "/onboarding"
-					// 线上环境 "/FractalShelter/": 自动变成 "/FractalShelter/onboarding"
-					// 中文环境 "/FractalShelter/zh/": 自动变成 "/FractalShelter/zh/onboarding"
-					const targetPath = new URL('onboarding', currentUrl).pathname;
-
-					// 使用 Astro 的平滑跳转
-					navigate(targetPath);
+					// 此时 targetUrl 必然是形如 "/FractalShelter/onboarding/" 的完美格式
+					navigate(targetUrl);
 				}
 			});
 
