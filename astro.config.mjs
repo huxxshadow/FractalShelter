@@ -5,6 +5,9 @@ import icon from "astro-icon";
 import react from "@astrojs/react";
 
 export default defineConfig({
+    site: 'https://huxxshadow.github.io',
+    base: '/FractalShelter',
+
     vite: {
         plugins: [tailwindcss()],
     },
