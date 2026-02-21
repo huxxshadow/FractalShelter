@@ -4,8 +4,6 @@ import "../styles/global.css";
 import { Icon } from 'astro-icon/components'
 import FractalLogo from '../components/FractalLogo.tsx';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-
-const onboardingPath = getRelativeLocaleUrl('en', 'onboarding/');
 ---
 
 <Layout>
@@ -26,7 +24,7 @@ const onboardingPath = getRelativeLocaleUrl('en', 'onboarding/');
 
 
 
-	<div id="main-interface" data-target-url={onboardingPath} class="min-h-screen w-full flex transition-opacity duration-300">
+	<div id="main-interface" class="min-h-screen w-full flex transition-opacity duration-300">
 		<div class="w-1/3 min-w-[700px] bg-[#D00000] relative">
 
 
@@ -464,12 +462,8 @@ const onboardingPath = getRelativeLocaleUrl('en', 'onboarding/');
 			// 3. 构建时间轴
 			const tl = gsap.timeline({
 				onComplete: () => {
-					// 直接从 DOM 上读取刚才注入的安全路径
-					const mainInterface = document.getElementById('main-interface');
-					const targetUrl = mainInterface.dataset.targetUrl;
-
-					// 此时 targetUrl 必然是形如 "/FractalShelter/onboarding/" 的完美格式
-					navigate(targetUrl);
+					// 3. Use Astro's navigate instead of window.location.href
+					navigate(`${import.meta.env.BASE_URL}/onboarding`);
 				}
 			});
 
