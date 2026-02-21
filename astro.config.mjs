@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 export default defineConfig({
     site: 'https://huxxshadow.github.io',
     base: '/FractalShelter',
-
+    trailingSlash: "always",
     vite: {
         plugins: [tailwindcss()],
     },
