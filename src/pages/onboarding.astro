@@ -1,0 +1,576 @@
+﻿---
+import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import guideImage from '../assets/character1.png';
+---
+
+<Layout>
+    <div class="min-h-screen bg-white flex flex-col p-6 overflow-hidden selection:bg-[#D00000] selection:text-white">
+        <header class=" mb-4 border-b-12 border-[#D00000] pb-4 flex justify-between items-end shrink-0">
+            <h1 class="text-[#D00000] text-6xl font-black tracking-wide uppercase">
+                Welcome to Fractal Shelter
+            </h1>
+            <Icon class="inline-block w-16 h-16" name="logo" id="hero-logo" transition:name="fractal-logo"></Icon>
+        </header>
+
+        <main class="grid grid-cols-16 gap-12 flex-grow h-full min-h-0 mt-4">
+
+            <section class="col-span-9 flex flex-col relative overflow-hidden pr-8 bg-transparent border-none">
+                <div class="flex items-center gap-4 mb-4 text-[#D00000]">
+                    <h2 class="text-4xl font-black tracking-widest uppercase">Session Handshake</h2>
+                    <div class="h-1 flex-grow bg-gray-100 relative">
+                        <div id="handshake-progress-bar" class="absolute top-0 left-0 h-full bg-[#D00000] w-0"></div>
+                    </div>
+                    <span id="handshake-status" class="font-mono text-lg uppercase text-gray-400 min-w-[120px] text-right">Pending</span>
+                </div>
+
+                <div id="handshake-container" class="flex-grow relative w-full mt-8 mb-8">
+                    <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none">
+                        <path id="bg-path" fill="none" stroke="#f3f4f6" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
+                        <path id="active-path" fill="none" stroke="#D00000" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter" />
+                    </svg>
+
+                    <div class="relative z-10 grid grid-cols-3 gap-y-16 w-full h-full px-12 pb-8">
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="0">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">01</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Link</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="1">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">02</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Auth</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="2">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">03</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Sync</span>
+                        </div>
+
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="5">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">06</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Route</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="4">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">05</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Decrypt</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="3">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">04</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Verify</span>
+                        </div>
+
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="6">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">07</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Map</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="7">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">08</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Inject</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <button class="node-btn group relative outline-none" data-index="8">
+                                <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">09</span>
+                            </button>
+                            <span class="node-label mt-4 font-mono text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Connect</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-handshake-complete" class="absolute bottom-4 right-8 opacity-0 pointer-events-none translate-y-4 px-10 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-colors hover:bg-[#a00000] z-20">
+                        Acknowledge
+                    </button>
+                </div>
+            </section>
+
+            <section class="col-span-3 flex flex-col relative">
+                <div class="relative flex-grow flex flex-col">
+                    <div id="sidebar-track" class="absolute left-[4px] top-0 bottom-0 w-[4px] bg-gray-200 z-0 rounded-full">
+                        <div id="sidebar-progress" class="w-full bg-[#D00000] h-[0%] transition-all duration-500 rounded-full"></div>
+                    </div>
+
+                    <ul id="procedure-list" class="flex-grow flex flex-col space-y-6 z-10 relative">
+                        <li id="step-procedure" class="flex items-center">
+                            <div class="w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 flex items-center justify-center z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 rounded-l-md rounded-r-full shadow-lg">
+                                <span class="block text-3xl font-black tracking-wide uppercase whitespace-nowrap">PROCEDURE</span>
+                                <Icon name="mdi:loading" class="w-7 h-7 shrink-0 animate-spin ml-auto" />
+                            </div>
+                        </li>
+
+                        <li id="step-handshake" class="flex items-center group">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:handshake" class="w-7 h-7 shrink-0 opacity-50 group-hover:scale-110 transition-transform" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Session Handshake</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Pending
+                                </div>
+                            </div>
+                        </li>
+
+                        <li id="step-identity" class="flex items-center group">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:card-account-details-outline" class="w-7 h-7 shrink-0 opacity-50 group-hover:scale-110 transition-transform" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Identity Intake</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:file-document-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Disclosure</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:shield-check-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Vetting Check</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:badge-account-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Role Assignment</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:clipboard-check-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Clearance Audit</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:alert-octagon-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Safety Brief</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:tune" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Calibration</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                            <div class="w-4 shrink-0"></div>
+                            <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                                <Icon name="mdi:check-circle-outline" class="w-7 h-7 shrink-0 opacity-50" />
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Complete</span>
+                                <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                                    Locked
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="col-span-4 flex flex-col relative items-center justify-center pl-8">
+                <Image
+                        src={guideImage}
+                        alt="Guide Unit"
+                        width={1400} height={2000}
+                        class="object-cover scale-150 origin-center -mb-100"
+                />
+                <!--<div class="w-full max-w-[340px] aspect-[3/4] bg-gray-100 flex flex-col items-center justify-center text-gray-400 group hover:bg-gray-200 transition-colors cursor-pointer">-->
+                <!--    <Icon name="mdi:image-outline" class="w-20 h-20 mb-6 opacity-50 group-hover:text-[#D00000] group-hover:opacity-100 transition-all" />-->
+                <!--    <span class="font-black text-lg tracking-widest uppercase text-gray-600 group-hover:text-[#D00000] transition-colors">Sample Picture</span>-->
+                <!--    <span class="font-mono text-sm mt-2 opacity-60">AI Assistant Graphic</span>-->
+                <!--</div>-->
+
+                <!--<div class="mt-8 text-center w-full max-w-[340px] flex justify-between items-end border-b-2 border-gray-100 pb-4">-->
+                <!--    <div class="text-left">-->
+                <!--        <h3 class="font-black text-2xl text-gray-900 uppercase tracking-wide">Guide Unit</h3>-->
+                <!--        <p class="text-gray-400 font-mono text-sm mt-1">Status: Syncing</p>-->
+                <!--    </div>-->
+                <!--    <div class="flex gap-2 items-center">-->
+                <!--        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>-->
+                <!--        <span class="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest">Uplink</span>-->
+                <!--    </div>-->
+                <!--</div>-->
+
+                <div class="absolute bottom-0 right-0 font-mono text-sm text-gray-300">
+                    SECTOR_1/3
+                </div>
+            </section>
+        </main>
+    </div>
+</Layout>
+
+<script is:inline>
+    const fillPlaceholderButtons = () => {
+        const list = document.getElementById('procedure-list');
+        const container = list?.parentElement;
+        if (!list || !container) return;
+
+        // 清理旧的占位符（依赖 dynamic-placeholder 类名）
+        list.querySelectorAll('.dynamic-placeholder').forEach(el => el.remove());
+
+        const realItems = Array.from(list.children);
+        if (realItems.length === 0) return;
+
+        // 获取最后一个真实项目和容器的底部位置计算差值
+        const lastRealItem = realItems[realItems.length - 1];
+        const containerBottom = container.getBoundingClientRect().bottom;
+        const lastItemBottom = lastRealItem.getBoundingClientRect().bottom;
+
+        const remainingHeight = containerBottom - lastItemBottom;
+        const itemHeight = 88; // 预估单个项目的整体高度(含间距)
+
+        const neededItems = Math.floor(remainingHeight / itemHeight);
+
+        if (neededItems > 0) {
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < neededItems; i++) {
+                const li = document.createElement('li');
+                // 样式完全与你要求的一致，仅追加 dynamic-placeholder 用于在 Resize 时能被选中清理
+                li.className = "flex items-center procedure-item dynamic-placeholder";
+
+                // 内部 HTML 结构和 class 完全一致，Icon 替换为了 mdi:lock-outline 的纯 SVG 路径
+                li.innerHTML = `
+                    <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                    <div class="w-4 shrink-0"></div>
+                    <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                        <svg class="w-7 h-7 shrink-0 opacity-50" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3M18,20V10H6V20H18Z" />
+                        </svg>
+                        <span class="block text-lg font-bold tracking-wide whitespace-nowrap">......</span>
+                        <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                            Locked
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(li);
+            }
+            list.appendChild(fragment);
+        }
+    };
+
+    // 确保页面布局和 CSS 渲染完成后计算
+    window.addEventListener('load', fillPlaceholderButtons);
+    // 窗口调整大小重新计算
+    window.addEventListener('resize', fillPlaceholderButtons);
+</script>
+
+<script>
+    import { gsap } from "gsap";
+
+    // ==========================================
+    // 1. 动态生成占位符按钮逻辑
+    // ==========================================
+    const fillPlaceholderButtons = () => {
+        const list = document.getElementById('procedure-list');
+        const container = list?.parentElement;
+        if (!list || !container) return;
+
+        // 清理旧的占位符
+        list.querySelectorAll('.dynamic-placeholder').forEach(el => el.remove());
+        const realItems = Array.from(list.children);
+        if (realItems.length === 0) return;
+
+        const lastRealItem = realItems[realItems.length - 1];
+        const containerBottom = container.getBoundingClientRect().bottom;
+        const lastItemBottom = lastRealItem.getBoundingClientRect().bottom;
+
+        const remainingHeight = containerBottom - lastItemBottom;
+        const itemHeight = 88; // 预估单个项目的整体高度
+
+        const neededItems = Math.floor(remainingHeight / itemHeight);
+        if (neededItems > 0) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < neededItems; i++) {
+                const li = document.createElement('li');
+                li.className = "flex items-center procedure-item dynamic-placeholder";
+                li.innerHTML = `
+                    <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                    <div class="w-4 shrink-0"></div>
+                    <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
+                        <svg class="w-7 h-7 shrink-0 opacity-50" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3M18,20V10H6V20H18Z" />
+                        </svg>
+                        <span class="block text-lg font-bold tracking-wide whitespace-nowrap">......</span>
+                        <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
+                            Locked
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(li);
+            }
+            list.appendChild(fragment);
+        }
+    };
+
+    // ==========================================
+    // 2. Handshake 节点路径计算
+    // ==========================================
+    function initHandshake() {
+        const container = document.getElementById('handshake-container');
+        const bgPath = document.getElementById('bg-path');
+        const activePath = document.getElementById('active-path');
+
+        const nodes = Array.from(document.querySelectorAll('.node-btn')).sort((a, b) => {
+            return parseInt(a.dataset.index) - parseInt(b.dataset.index);
+        });
+
+        if (!container || nodes.length === 0) return null;
+
+        let distances = [0];
+        let totalDist = 0;
+
+        const updatePath = () => {
+            const containerRect = container.getBoundingClientRect();
+            let points = nodes.map(node => {
+                const rect = node.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width / 2 - containerRect.left,
+                    y: rect.top + rect.height / 2 - containerRect.top
+                };
+            });
+
+            let d = `M ${points[0].x} ${points[0].y} `;
+            distances = [0];
+            totalDist = 0;
+
+            for(let i = 1; i < points.length; i++) {
+                d += `L ${points[i].x} ${points[i].y} `;
+                let dx = points[i].x - points[i-1].x;
+                let dy = points[i].y - points[i-1].y;
+                totalDist += Math.sqrt(dx*dx + dy*dy);
+                distances.push(totalDist);
+            }
+
+            bgPath.setAttribute('d', d);
+            activePath.setAttribute('d', d);
+
+            return totalDist;
+        };
+
+        const pathLength = updatePath();
+
+        gsap.set(activePath, {
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength
+        });
+
+        return { pathLength, nodes, distances, updatePath };
+    }
+
+    // ==========================================
+    // 3. 播放 Handshake 连线动画
+    // ==========================================
+    function playSequence() {
+        const setup = initHandshake();
+        if(!setup) return;
+
+        const { nodes, pathLength, distances } = setup;
+        const activePath = document.getElementById('active-path');
+        const statusText = document.getElementById('handshake-status');
+        const topProgressBar = document.getElementById('handshake-progress-bar');
+        const btnComplete = document.getElementById('btn-handshake-complete');
+
+        const tl = gsap.timeline({
+            delay: 0.2, // 微调延迟，让入场动画刚结束就开始连线
+            onComplete: () => {
+                statusText.textContent = "ESTABLISHED";
+                statusText.classList.replace('text-gray-400', 'text-[#D00000]');
+                statusText.classList.add('font-black');
+            }
+        });
+
+        const totalDuration = 4.5;
+
+        tl.to(activePath, {
+            strokeDashoffset: 0,
+            duration: totalDuration,
+            ease: "none"
+        }, 0);
+
+        tl.to(topProgressBar, {
+            width: "100%",
+            duration: totalDuration,
+            ease: "none"
+        }, 0);
+
+        nodes.forEach((node, i) => {
+            const label = node.parentElement.querySelector('.node-label');
+            const ratio = distances[i] / pathLength;
+            const delay = ratio * totalDuration;
+
+            tl.add(() => {
+                statusText.textContent = `SYNC_N${i+1}...`;
+                const numSpan = node.querySelector('span');
+                numSpan.classList.replace('text-gray-200', 'text-[#D00000]');
+                label.classList.replace('text-gray-300', 'text-[#D00000]');
+                label.classList.add('font-bold');
+            }, delay);
+        });
+
+        tl.to(btnComplete, {
+            opacity: 1,
+            y: 0,
+            pointerEvents: "auto",
+            duration: 0.4,
+            ease: "power2.out"
+        }, "+=0.3");
+    }
+
+    // ==========================================
+    // 4. 计算左侧侧边栏轨道进度
+    // ==========================================
+    function updateSidebarProgress(targetId) {
+        const track = document.getElementById('sidebar-track');
+        const progress = document.getElementById('sidebar-progress');
+        const targetLi = document.getElementById(targetId);
+
+        if (!track || !progress || !targetLi) return;
+
+        const dot = targetLi.querySelector('.w-3.h-3');
+        if (!dot) return;
+
+        const trackRect = track.getBoundingClientRect();
+        const dotRect = dot.getBoundingClientRect();
+        const targetHeight = (dotRect.top - trackRect.top) + (dotRect.height / 2);
+
+        progress.style.height = `${targetHeight}px`;
+        track.dataset.activeStep = targetId;
+    }
+
+    // ==========================================
+    // 5. Astro ViewTransitions 核心接管逻辑
+    // ==========================================
+    document.addEventListener('astro:page-load', () => {
+        // 先生成占位列表，确保布局高度完整
+        fillPlaceholderButtons();
+
+        // 绑定窗口调整大小事件
+        window.addEventListener('resize', () => {
+            fillPlaceholderButtons();
+
+            // 修正左侧红线高度
+            const track = document.getElementById('sidebar-track');
+            if (track && track.dataset.activeStep) {
+                updateSidebarProgress(track.dataset.activeStep);
+            }
+
+            // 修正中央连线
+            const container = document.getElementById('handshake-container');
+            const activePath = document.getElementById('active-path');
+            if(container && activePath) {
+                const setup = initHandshake();
+                if(setup && gsap.getProperty(activePath, "strokeDashoffset") === 0) {
+                    gsap.set(activePath, { strokeDasharray: setup.pathLength, strokeDashoffset: 0 });
+                }
+            }
+        });
+
+        // --- 核心入场动画 ---
+        // 1. 初始化时，先隐藏除了 Logo 以外的所有主要内容
+        gsap.set(['header h1', 'main'], { opacity: 0, y: 20 });
+
+        // 2. 等待 Logo 跨页飞行完成 (约 0.4s) 后，再将新界面的元素浮现出来
+        gsap.to(['header h1', 'main'], {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: 0.4, // 等待 ViewTransitions 的 Logo 飞行
+            ease: "power3.out",
+            stagger: 0.1, // 标题和下方控制台错开浮现
+            onComplete: () => {
+                // 界面完全显示完成后，启动左侧进度拉伸和核心握手动画
+                updateSidebarProgress('step-procedure');
+                playSequence();
+            }
+        });
+
+        // --- 确认按钮点击逻辑 ---
+        const btnComplete = document.getElementById('btn-handshake-complete');
+        if (btnComplete) {
+            btnComplete.addEventListener('click', () => {
+                btnComplete.disabled = true;
+                const tl = gsap.timeline();
+
+                tl.to(btnComplete, { opacity: 0, y: 10, duration: 0.2, pointerEvents: "none" });
+
+                tl.add(() => {
+                    const stepHandshake = document.getElementById('step-handshake');
+                    if (stepHandshake) {
+                        const body = stepHandshake.querySelector('.flex-grow');
+                        const badge = stepHandshake.querySelector('.ml-auto');
+                        const dot = stepHandshake.querySelector('.w-3.h-3');
+                        const icon = stepHandshake.querySelector('svg');
+                        const textSpan = stepHandshake.querySelector('span');
+
+                        body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 cursor-pointer hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md";
+                        badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                        badge.textContent = "Active";
+                        dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
+                        icon.classList.replace('opacity-50', 'opacity-100');
+                        textSpan.classList.replace('font-bold', 'font-black');
+
+                        updateSidebarProgress('step-handshake');
+                    }
+                }, "+=0.1");
+            });
+        }
+    });
+</script>

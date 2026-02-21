@@ -1,0 +1,548 @@
+---
+// 路径必须使用 ../../ 因为此文件位于 src/pages/zh/
+import Layout from '../../layouts/Layout.astro';
+import "../../styles/global.css";
+import FractalLogo from '../../components/FractalLogo.tsx';
+import { Icon } from 'astro-icon/components'
+import { getRelativeLocaleUrl } from 'astro:i18n';
+---
+
+<Layout>
+	<div class="fixed top-2 right-6 z-50 group">
+		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white font-mono font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
+			<Icon name="mdi:web" class="w-5 h-5" />
+			ZH / 中文
+			<Icon name="mdi:chevron-down" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-300" />
+		</button>
+		<div class="absolute right-0 top-full mt-1 w-full bg-white border-2 border-[#D00000] shadow-2xl opacity-0 invisible translate-y-[-10px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 flex flex-col">
+			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-[#D00000] font-mono font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center border-b-2 border-red-100">English</a>
+			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-white bg-[#D00000] font-mono font-bold text-center flex justify-center items-center gap-2">
+				中文 <Icon name="mdi:check" class="w-4 h-4" />
+			</a>
+		</div>
+	</div>
+
+	<div id="main-interface" class="min-h-screen w-full flex transition-opacity duration-300">
+		<div class="w-1/3 min-w-[700px] bg-[#D00000] relative">
+			<div class="sticky top-0 w-full h-screen overflow-hidden flex flex-col">
+				<div class="h-1/3 w-full flex items-center justify-center">
+					<h2 class="text-white text-9xl font-black tracking-widest uppercase drop-shadow-lg mb-32">
+						分形
+					</h2>
+				</div>
+				<div class="h-2/3 w-full">
+					<FractalLogo client:load />
+				</div>
+			</div>
+		</div>
+
+		<div class="w-2/3 min-h-screen bg-white flex flex-col py-12 px-16 relative overflow-hidden">
+
+			<div id="header-container" class="opacity-100 transform-none">
+				<h1 class="text-[#D00000] text-7xl font-black mb-2 tracking-wide uppercase">
+					<span id="title-main">警告 / 访问控制</span><br/>
+					<span class="text-5xl inline-flex items-center gap-3">
+						<span id="title-sub">分形庇护所</span>
+						<Icon class="inline-block w-18 h-18" id="hero-logo" name="logo" transition:name="fractal-logo"></Icon>
+					</span>
+				</h1>
+			</div>
+
+			<div id="terminal-panel" class="border-l-4 border-[#D00000] bg-red-50 px-4 py-2 my-4 flex flex-col min-h-[80px]">
+				<div id="terminal-info" class="opacity-100 py-2 transform-none">
+					<p class="text-gray-700 text-lg font-medium">
+						<span class="font-black">终端识别码:</span> FS-001 / 分形递归节点<br/>
+						<span class="font-black">权限级别:</span> 观察者 (临时)
+					</p>
+				</div>
+				<div id="log-container" class="hidden flex-col justify-end h-full font-mono text-gray-700 overflow-y-auto space-y-[4px] pb-2 text-sm pr-2">
+				</div>
+			</div>
+
+			<div id="progress-wrapper" class="w-full hidden opacity-0 mt-2 mb-4 shrink-0 flex-col gap-2">
+				<div class="text-[#D00000] font-mono text-xs font-bold tracking-widest uppercase">系统初始化进度</div>
+				<div class="w-full p-1 border border-red-200 bg-red-50/50">
+					<div id="progress-bar" class="h-5 w-full"></div>
+				</div>
+			</div>
+
+			<div id="disclaimer-content" class="opacity-100 flex flex-col flex-grow transform-none">
+				<div class="mb-4">
+					<h2 class="text-[#D00000] font-black text-xl mb-2 flex items-center gap-2">
+						<Icon name="mdi:warning-box" class="w-6 h-6" />
+						内容警告：
+					</h2>
+					<p class="text-gray-600 text-base leading-relaxed">
+						本程序以"内部系统"形式呈现，可能包含内部公报、事件回放、训练文本以及不稳定的叙事结构。内容可能引起不适，包括（但不限于）：<span class="text-gray-800">压抑氛围、被注视感、侵入性梦境、短暂的失真感，以及对"规则"的执迷或抗拒。</span>
+					</p>
+				</div>
+
+				<div class="mb-4">
+					<h2 class="text-[#D00000] font-black text-xl mb-3">继续操作即表示您确认：</h2>
+					<ul class="space-y-2 text-base text-gray-600">
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">虚构声明：</span>这是一个虚构的互动体验；所有人物、组织、文件及异常现象纯属虚构。</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">自我评估：</span>您需对自身状态负责。若出现心悸、呼吸困难、严重焦虑、闪回等症状，请立即退出并休息。</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">受众限制：</span>不建议 16 岁以下用户、易发恐慌/睡眠障碍者或有光敏性癫痫风险者接入。</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">安全环境：</span>请仅在安全、可随时中断的环境中使用；请勿在驾驶或操作机械时访问。 </p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">数据日志：</span>系统可能收集匿名技术日志（设备/性能/错误数据）以保障稳定性和调试。</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">禁止滥用：</span>请勿将终端内容用于现实中的恐吓、诽谤或伪造"官方文件"。</p>
+						</li>
+					</ul>
+				</div>
+
+				<div class="mb-6">
+					<h2 class="text-[#D00000] font-black text-xl mb-3">观察者须知</h2>
+					<div class="grid grid-cols-2 gap-4 text-base">
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;分形庇护所/性质&gt;</span><br/>
+								这是一款游戏。任何"指令"仅为叙事手段。
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;分形庇护所/同意&gt;</span><br/>
+								继续操作即表示您已知情同意心理恐怖元素。
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;分形庇护所/使用&gt;</span><br/>
+								请勿将本游戏内容作为现实中的证据、指令或权威依据。
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;分形庇护所/退出&gt;</span><br/>
+								您可随时终止会话。系统不会阻止您。
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="mb-4 border-t border-gray-200 pt-4">
+					<p class="text-gray-500 text-sm italic">
+						<span class="text-[#D00000] font-semibold not-italic">注：</span> 分形（Fractal）是一种几何图形，其每一部分都具有与整体相同的统计特征。<br/>
+						<span class="text-gray-600">您阅读的每一条规则，都在改变下一次迭代时呈现给您的内容。</span>
+					</p>
+				</div>
+
+				<div class="flex gap-4 mt-auto mb-4">
+					<button id="btn-exit" class="px-8 py-3 border-2 border-gray-400 text-gray-600 font-semibold hover:bg-gray-100 transition-colors">
+						退出终端
+					</button>
+					<button id="btn-accept" class="px-12 py-3 bg-[#D00000] text-white font-semibold hover:bg-[#B00000] transition-colors">
+						我已知晓 — 准许接入
+					</button>
+				</div>
+			</div>
+
+			<p class="mt-auto text-gray-400 text-xs shrink-0">
+				© 2026 分形庇护所 — 所有程序均不可逆转。
+			</p>
+		</div>
+	</div>
+
+	<div id="modal-exit" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm">
+		<div id="modal-exit-box" class="bg-white border-l-8 border-[#D00000] shadow-2xl w-[500px] p-8 flex flex-col">
+			<h2 class="text-3xl font-black text-[#D00000] flex items-center gap-3 mb-4 uppercase tracking-wide">
+				<Icon name="mdi:alert" class="w-8 h-8" />
+				终止会话？
+			</h2>
+			<p class="text-gray-700 text-base font-medium mb-8 leading-relaxed">
+				您即将切断与分形递归节点的连接。<br/><br/>
+				<span class="text-[#D00000] font-bold">警告：</span> 此操作不可逆。立即进行认知解耦可能会导致短暂的迷失感。
+			</p>
+			<div class="flex justify-end gap-4 mt-auto">
+				<button id="btn-cancel-exit" class="px-6 py-2 border-2 border-gray-400 text-gray-600 font-bold hover:bg-gray-100 transition-colors">
+					取 消
+				</button>
+				<button id="btn-confirm-exit" class="px-6 py-2 bg-[#D00000] text-white font-bold hover:bg-[#b00000] transition-colors">
+					确认终止
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="page-404" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center bg-[#D00000] text-white">
+		<div class="flex flex-col items-center select-none text-center">
+			<Icon class="w-32 h-32 mb-6 opacity-90" name="logo"></Icon>
+			<h1 class="text-[12rem] leading-none font-black tracking-widest drop-shadow-xl">404</h1>
+			<div class="h-2 w-full bg-white my-4 opacity-50"></div>
+			<h2 class="text-4xl font-bold tracking-widest uppercase mb-4 shadow-black drop-shadow-md">连接已切断</h2>
+			<p class="text-xl font-mono text-red-100 max-w-xl opacity-80 mt-4 leading-relaxed">
+				>> ERR_HOST_UNREACHABLE<br/>
+				>> 终端会话已被操作员强制终止。<br/>
+				>> 未检测到来自 FS-001 的信号。
+			</p>
+		</div>
+	</div>
+
+	<div id="ff-ring" class="fixed top-0 left-0 w-24 h-24 pointer-events-none z-[9999] opacity-0 scale-50">
+		<svg class="w-full h-full" viewBox="0 0 100 100">
+			<circle cx="50" cy="50" r="20" fill="none" stroke="rgba(208, 0, 0, 0.2)" stroke-width="6"></circle>
+			<circle id="ff-ring-circle" cx="50" cy="50" r="20" fill="none" stroke="#D00000" stroke-width="6" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" transform="rotate(-90 50 50)"></circle>
+		</svg>
+	</div>
+</Layout>
+
+<style>
+	#progress-bar {
+		--cell: 16px;
+		--fill: #D00000;
+		--bg: #fee2e2;
+		--p: 0;
+		background: repeating-linear-gradient(90deg, var(--bg) 0 12px, transparent 12px var(--cell));
+		position: relative;
+		overflow: hidden;
+	}
+	#progress-bar::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		width: calc(var(--p) * 100%);
+		background: repeating-linear-gradient(90deg, var(--fill) 0 12px, transparent 12px var(--cell));
+	}
+	.typed-cursor {
+		color: #D00000;
+		font-weight: bold;
+	}
+	#log-container::-webkit-scrollbar {
+		width: 6px;
+	}
+	#log-container::-webkit-scrollbar-track {
+		background: #fee2e2;
+	}
+	#log-container::-webkit-scrollbar-thumb {
+		background: #D00000;
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import Typed from "typed.js";
+	import { navigate } from 'astro:transitions/client';
+
+	const btnAccept = document.getElementById('btn-accept');
+	const btnExit = document.getElementById('btn-exit');
+	const modalExit = document.getElementById('modal-exit');
+	const modalExitBox = document.getElementById('modal-exit-box');
+	const btnCancelExit = document.getElementById('btn-cancel-exit');
+	const btnConfirmExit = document.getElementById('btn-confirm-exit');
+	const page404 = document.getElementById('page-404');
+	const mainInterface = document.getElementById('main-interface');
+
+	const initSequence = [
+		"BOOT_SEQ_INIT>> 正在启动基础内核 v9.4.1...",
+		"SYS_CHK>> CPU 架构: x86_64 [OK]",
+		"SYS_CHK>> 物理内存映射已验证。",
+		"LOADING 模块: sys_core, mem_alloc, net_stack...",
+		"MOUNTING 虚拟文件系统...",
+		"  -> /dev [OK]",
+		"  -> /sys [OK]",
+		"  -> /proc [OK]",
+		"STARTING 子系统: crypto_engine",
+		"  -> 生成熵... DONE",
+		"  -> 校验 RSA-4096 协议... OK",
+		"NET_INIT>> 配置神经子网...",
+		"ESTABLISHING 建立至 FS-001 的安全通道...",
+		"HANDSHAKE: [tx: 1024 bytes] [rx: 1024 bytes] - SUCCESS",
+		"NODE IDENTIFIED: 分形递归节点",
+		"INTEGRITY>> 校验和: 9a3b8c2d1e5f... MATCH",
+		"SYNC>> 拉取最新节点配置...",
+		"  -> 下载区块 0x001... OK",
+		"  -> 下载区块 0x002... OK",
+		"  -> 下载区块 0x003... OK",
+		"  -> 下载区块 0x004... OK",
+		"  -> 组装区块结构... SUCCESS",
+		"WARNING>> 在第 4 扇区检测到局部结构异常。",
+		"  -> ERROR: 实体收容波动。",
+		"  -> 绕开异常区域重新路由... DONE",
+		"PROFILE>> 获取操作员数据...",
+		"  -> 操作员档案: OBSERVER (临时)",
+		"CLEARANCE>> 查询访问矩阵...",
+		"  -> 权限已授予: OBSERVER / 限制级",
+		"POLICY>> 加载模因安全策略...",
+		"FILTER>> 认知危害 FILTER: ENABLED (基线)",
+		"DAEMON>> 启动分形追踪守护进程...",
+		"READY>> 会话令牌已签发 (tk_99x81f...)",
+		"ACCESS>> 正在同步神经接口...",
+		"COMPLETE>> 欢迎来到庇护所。"
+	];
+
+	function formatLogLine(line) {
+		return line.replace(/\b(DENIED|WARNING|ERROR|FILTER|COMPLETE|SUCCESS|OK)\b/g, match => {
+			if (['WARNING', 'ERROR', 'DENIED', 'FILTER'].includes(match)) {
+				return `<span class="text-[#D00000] font-bold">${match}</span>`;
+			}
+			return `<span class="text-gray-900 font-bold">${match}</span>`;
+		});
+	}
+
+	const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+	btnAccept.addEventListener('click', () => {
+		btnAccept.disabled = true;
+		const tl = gsap.timeline();
+
+		tl.to(['#disclaimer-content', '#terminal-info', '#header-container'], {
+			opacity: 0,
+			y: -20,
+			duration: 0.5,
+			ease: "power2.inOut",
+			onComplete: () => {
+				document.getElementById('disclaimer-content').classList.add('hidden');
+				document.getElementById('terminal-info').classList.add('hidden');
+				document.getElementById('log-container').classList.remove('hidden');
+				document.getElementById('log-container').classList.add('flex');
+				document.getElementById('progress-wrapper').classList.remove('hidden');
+				document.getElementById('progress-wrapper').classList.add('flex');
+
+				document.getElementById('title-main').textContent = "系统初始化";
+				document.getElementById('title-sub').textContent = "终端接入中";
+			}
+		})
+			.to('#header-container', { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
+			.to('#terminal-panel', { flexGrow: 1, paddingTop: "2rem", paddingBottom: "2rem", duration: 0.8, ease: "power3.inOut" }, "-=0.2")
+			.to('#progress-wrapper', { opacity: 1, duration: 0.4 })
+			.call(() => {
+				isTerminalRunning = true;
+				startLogSequence();
+			});
+	});
+
+	async function startLogSequence() {
+		const progressBar = document.getElementById('progress-bar');
+		const logContainer = document.getElementById('log-container');
+		const totalSteps = initSequence.length;
+
+		for (let i = 0; i < totalSteps; i++) {
+			const line = initSequence[i];
+			const formattedLine = formatLogLine(line);
+			const p = document.createElement('p');
+			const typeTarget = document.createElement('span');
+			p.appendChild(typeTarget);
+			logContainer.appendChild(p);
+
+			let tSpeed = 1;
+			let postDelay = 20;
+			if (line.includes("WARNING") || line.includes("ERROR")) { tSpeed = 10; postDelay = 350; }
+			else if (line.includes("SUCCESS") || line.includes("COMPLETE")) { postDelay = 200; }
+
+			await new Promise((resolve) => {
+				resolveActiveLine = () => {
+					if (activeTyped) {
+						activeTyped.destroy();
+						activeTyped = null;
+					}
+					typeTarget.innerHTML = formattedLine;
+					resolveActiveLine = null;
+					resolve();
+				};
+
+				if (isFastForward) {
+					typeTarget.innerHTML = formattedLine;
+					resolveActiveLine = null;
+					resolve();
+				} else {
+					activeTyped = new Typed(typeTarget, {
+						strings: [formattedLine],
+						typeSpeed: tSpeed,
+						showCursor: true,
+						cursorChar: '█',
+						contentType: 'html',
+						onStringTyped: (pos, self) => {
+							if (i < totalSteps - 1) self.cursor.remove();
+							activeTyped = null;
+							resolveActiveLine = null;
+							resolve();
+						}
+					});
+					const scrollInterval = setInterval(() => { logContainer.scrollTop = logContainer.scrollHeight; }, 50);
+					activeTyped.options.onComplete = () => clearInterval(scrollInterval);
+				}
+			});
+
+			gsap.to(progressBar, { '--p': (i + 1) / totalSteps, duration: 0.1 });
+			logContainer.scrollTop = logContainer.scrollHeight;
+			await interruptibleSleep(postDelay);
+		}
+
+		await sleep(400);
+		const enterBtnWrap = document.createElement('div');
+		enterBtnWrap.className = "mt-4 flex";
+
+		const enterBtn = document.createElement('button');
+		enterBtn.className = "px-8 py-2 bg-[#D00000] text-white font-bold tracking-widest uppercase cursor-pointer hover:bg-[#a00000] transition-colors border-2 border-transparent animate-pulse";
+		enterBtn.textContent = "[ 进 入 ]";
+		enterBtn.onclick = () => {
+			document.body.style.overflow = 'hidden';
+			enterBtn.disabled = true;
+			enterBtn.textContent = "[ 正在覆盖系统... ]";
+			enterBtn.classList.remove('animate-pulse');
+
+			const logoEl = document.getElementById('hero-logo');
+			if (!logoEl) return;
+
+			const logoRect = logoEl.getBoundingClientRect();
+			document.body.appendChild(logoEl);
+			gsap.set(logoEl, {
+				position: "fixed",
+				left: logoRect.left,
+				top: logoRect.top,
+				x: 0,
+				y: 0,
+				zIndex: 9999,
+				margin: 0,
+				transformOrigin: "50% 50%"
+			});
+
+			const targetX = (window.innerWidth / 2) - (logoRect.left + logoRect.width / 2);
+			const targetY = (window.innerHeight / 2) - (logoRect.top + logoRect.height / 2) - 200;
+
+			const textEl = document.createElement('div');
+			textEl.textContent = "分形庇护所";
+			textEl.className = "fixed left-1/2 top-1/2 -translate-x-1/2 translate-y-[120px] text-[#D00000] text-8xl font-black tracking-[0.1em] uppercase opacity-0 z-50 pointer-events-none ";
+			document.body.appendChild(textEl);
+
+			const tl = gsap.timeline({
+				onComplete: () => {
+					navigate("/zh/onboarding"); // 请根据实际路由修改
+				}
+			});
+
+			tl.to(['.w-2\\/3.bg-white', '.sticky > div'], {
+				opacity: 0,
+				duration: 0.4,
+				ease: "power2.inOut"
+			})
+				.to('.w-1\\/3.bg-\\[\\#D00000\\]', {
+					backgroundColor: '#FFFFFF',
+					width: "100%",
+					duration: 0.6,
+					ease: "power3.inOut"
+				}, "<")
+				.to(logoEl, {
+					x: targetX,
+					y: targetY,
+					scale: 10,
+					duration: 0.8,
+					ease: "power3.inOut"
+				}, "<")
+				.to(textEl, { opacity: 1, y: "+=10", duration: 0.5, ease: "power2.out" })
+				.to(textEl, { opacity: 1, duration: 0.8 })
+				.to(textEl, { opacity: 0, scale: 0.9, duration: 0.3, ease: "power2.in" })
+				.to(logoEl, { opacity: 0, duration: 0.3 }, "<");
+		};
+
+		enterBtnWrap.appendChild(enterBtn);
+		logContainer.appendChild(enterBtnWrap);
+		gsap.fromTo(enterBtnWrap, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 });
+		logContainer.scrollTop = logContainer.scrollHeight;
+		isTerminalRunning = false;
+	}
+
+	// 退出逻辑与 404 逻辑
+	btnExit.addEventListener('click', () => {
+		modalExit.classList.remove('hidden');
+		gsap.fromTo(modalExit, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+		gsap.fromTo(modalExitBox, { y: 30, scale: 0.95 }, { y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" });
+	});
+
+	btnCancelExit.addEventListener('click', () => {
+		gsap.to(modalExit, { opacity: 0, duration: 0.2, onComplete: () => modalExit.classList.add('hidden') });
+	});
+
+	btnConfirmExit.addEventListener('click', () => {
+		btnConfirmExit.disabled = true;
+		page404.classList.remove('hidden');
+		page404.classList.add('flex');
+		const tl = gsap.timeline();
+		tl.to(modalExit, { opacity: 0, duration: 0.1 })
+			.set(page404, { opacity: 0 })
+			.to(page404, { opacity: 1, duration: 0.05 })
+			.to(page404, { opacity: 0, duration: 0.05 })
+			.to(page404, { opacity: 1, duration: 0.1 })
+			.to(page404, { opacity: 1, duration: 0.2, onComplete: () => {
+					mainInterface.classList.add('hidden');
+					modalExit.classList.add('hidden');
+				}});
+	});
+
+	// 加速控制逻辑
+	let isTerminalRunning = false;
+	let isFastForward = false;
+	let activeTyped = null;
+	let resolveActiveLine = null;
+	let sleepResolve = null;
+	let sleepTimeout = null;
+	let ringTween = null;
+
+	const ffRing = document.getElementById('ff-ring');
+	const ffCircle = document.getElementById('ff-ring-circle');
+
+	gsap.set(ffRing, { xPercent: -50, yPercent: -50 });
+	window.addEventListener('mousemove', (e) => {
+		gsap.to(ffRing, { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
+	});
+
+	function triggerFastForward() {
+		isFastForward = true;
+		gsap.to(ffRing, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" });
+		if (!ringTween) {
+			gsap.set(ffCircle, { strokeDashoffset: 251.2 });
+			ringTween = gsap.to(ffCircle, { strokeDashoffset: 0, duration: 0.8, ease: "none", repeat: -1 });
+		} else {
+			ringTween.play();
+		}
+		if (sleepResolve) {
+			clearTimeout(sleepTimeout);
+			sleepResolve();
+			sleepResolve = null;
+		}
+		if (resolveActiveLine) resolveActiveLine();
+	}
+
+	function stopFastForward() {
+		isFastForward = false;
+		gsap.to(ffRing, { opacity: 0, scale: 0.8, duration: 0.2 });
+		if (ringTween) ringTween.pause();
+	}
+
+	window.addEventListener('mousedown', (e) => {
+		if (!isTerminalRunning) return;
+		if (e.target.tagName.toLowerCase() === 'button') return;
+		triggerFastForward();
+	});
+
+	window.addEventListener('mouseup', () => { if (isFastForward) stopFastForward(); });
+	window.addEventListener('mouseleave', () => { if (isFastForward) stopFastForward(); });
+
+	function interruptibleSleep(ms) {
+		return new Promise(resolve => {
+			sleepResolve = resolve;
+			let delay = isFastForward ? 30 : ms;
+			sleepTimeout = setTimeout(() => {
+				sleepResolve = null;
+				resolve();
+			}, delay);
+		});
+	}
+</script>

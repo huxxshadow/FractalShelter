@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sierpinski + Shield (Equilateral)</title>
+  <style>
+    html, body { height: 100%; margin: 0; background: #f6f6f6; }
+    .wrap { height: 100%; display: grid; place-items: center; padding: 16px; }
+    svg { width: min(92vw, 900px); height: auto; background: white; display: block; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <svg id="svg"
+       viewBox="0 0 1000 900"
+       preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <mask id="cutMask">
+        <rect x="0" y="0" width="1000" height="900" fill="black"/>
+        <g id="keep" fill="white"></g>
+        <g id="cut" fill="black"></g>
+      </mask>
+    </defs>
+
+    <rect x="0" y="0" width="1000" height="900" fill="white"/>
+    <rect x="0" y="0" width="1000" height="900" fill="#b51f2a" mask="url(#cutMask)"/>
+
+    <!-- 内盾牌（红色实心小盾牌） -->
+    <g id="innerShield"></g>
+  </svg>
+</div>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const sqrt3 = Math.sqrt(3);
+
+  function pts(pts) {
+    return pts.map(([x,y]) => `${x.toFixed(3)},${y.toFixed(3)}`).join(" ");
+  }
+  function mid(a, b) { return [(a[0]+b[0])/2, (a[1]+b[1])/2]; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpPt(p, q, t) { return [lerp(p[0], q[0], t), lerp(p[1], q[1], t)]; }
+
+  function equilateralFromBase(B, C) {
+    const s = Math.hypot(C[0]-B[0], C[1]-B[1]);
+    const h = sqrt3 * s / 2;
+    const cx = (B[0]+C[0])/2;
+    const cy = (B[1]+C[1])/2;
+    return [cx, cy - h];
+  }
+
+  function centralInvertedTriangle(A, B, C) {
+    const AB = mid(A, B);
+    const AC = mid(A, C);
+    const BC = mid(B, C);
+    return [AB, AC, BC];
+  }
+
+  /**
+   * 盾牌：上方两段折线 + 下方两段弧线
+   * topAngleDeg：控制盾牌上方夹角（肩点不动，通过 topY 改变）
+   * bottomCurviness：控制下方两边弧度（极端版：只动底部控制点）
+   */
+  function shieldPath(cx, cy, w, h, topAngleDeg, bottomCurviness) {
+    const midY = cy - h * 0.12;
+
+    const leftX  = cx - w * 0.46;
+    const rightX = cx + w * 0.46;
+
+    const a = rightX - cx;
+    const alpha = (Math.max(1, Math.min(179, topAngleDeg)) * Math.PI / 180) / 2;
+    let topY = midY - (a / Math.tan(alpha));
+
+    const maxTopY = midY - h * 0.05;
+    const minTopY = cy - h * 0.95;
+    topY = Math.max(minTopY, Math.min(topY, maxTopY));
+
+    const botY = cy + h * 0.52;
+
+    const P0 = [rightX, midY];
+    const P3 = [cx, botY];
+    const Q0 = [cx, botY];
+    const Q3 = [leftX, midY];
+
+    const L2 = lerpPt(P0, P3, 2/3); // 右侧靠底直线控制点
+    const R1 = lerpPt(Q0, Q3, 1/3); // 左侧靠底直线控制点
+
+    const C1 = [cx + w * 0.48, cy - h * 0.02];         // 右侧靠肩（固定）
+    const C2_default = [cx + w * 0.22, cy + h * 0.36]; // 右侧靠底（可动）
+    const D1_default = [cx - w * 0.22, cy + h * 0.36]; // 左侧靠底（可动）
+    const D2 = [cx - w * 0.48, cy - h * 0.02];         // 左侧靠肩（固定）
+
+    const t = clamp(bottomCurviness, 0, 2.5);
+
+    function mixOrExtrap(linePt, defPt, t) {
+      if (t <= 1) return lerpPt(linePt, defPt, t);
+      const d = [defPt[0] - linePt[0], defPt[1] - linePt[1]];
+      return [linePt[0] + d[0] * t, linePt[1] + d[1] * t];
+    }
+
+    const C2 = mixOrExtrap(L2, C2_default, t);
+    const D1 = mixOrExtrap(R1, D1_default, t);
+
+    return `M ${cx} ${topY}
+            L ${rightX} ${midY}
+            C ${C1[0]} ${C1[1]}, ${C2[0]} ${C2[1]}, ${cx} ${botY}
+            C ${D1[0]} ${D1[1]}, ${D2[0]} ${D2[1]}, ${leftX} ${midY}
+            Z`;
+  }
+
+  function sierpinskiCut(A, B, C, depth, level, cutGroup, innerShieldGroup, opt) {
+    if (depth <= 0) return;
+
+    const inv = centralInvertedTriangle(A, B, C);
+
+    if (level === 0) {
+      const cx = (inv[0][0] + inv[1][0] + inv[2][0]) / 3;
+      const cy = (inv[0][1] + inv[1][1] + inv[2][1]) / 3;
+      const s  = Math.hypot(inv[1][0]-inv[0][0], inv[1][1]-inv[0][1]);
+
+      // 盾牌洞（mask 挖空）
+      const hole = document.createElementNS(NS, "path");
+      hole.setAttribute(
+              "d",
+              shieldPath(
+                      cx,
+                      cy + opt.shieldYOffset,
+                      s * opt.shieldWScale,
+                      s * opt.shieldHScale,
+                      opt.shieldTopAngleDeg,
+                      opt.shieldBottomCurviness
+              )
+      );
+      hole.setAttribute("fill", "black");
+      cutGroup.appendChild(hole);
+
+      // 内盾（红色实心内容，小一号）——新增 innerShieldYOffset 控制上下偏移
+      const inner = document.createElementNS(NS, "path");
+      inner.setAttribute(
+              "d",
+              shieldPath(
+                      cx,
+                      cy + opt.shieldYOffset + opt.innerShieldYOffset,
+                      s * opt.shieldWScale * opt.innerShieldScale,
+                      s * opt.shieldHScale * opt.innerShieldScale,
+                      opt.shieldTopAngleDeg,
+                      opt.shieldBottomCurviness
+              )
+      );
+      inner.setAttribute("fill", opt.innerShieldColor);
+      innerShieldGroup.appendChild(inner);
+
+    } else {
+      const poly = document.createElementNS(NS, "polygon");
+      poly.setAttribute("points", pts(inv));
+      poly.setAttribute("fill", "black");
+      cutGroup.appendChild(poly);
+    }
+
+    const AB = mid(A, B);
+    const AC = mid(A, C);
+    const BC = mid(B, C);
+
+    sierpinskiCut(A,  AB, AC, depth - 1, level + 1, cutGroup, innerShieldGroup, opt);
+    sierpinskiCut(AB, B,  BC, depth - 1, level + 1, cutGroup, innerShieldGroup, opt);
+    sierpinskiCut(AC, BC, C,  depth - 1, level + 1, cutGroup, innerShieldGroup, opt);
+  }
+
+  (function main() {
+    const svg = document.getElementById("svg");
+    const keep = svg.querySelector("#keep");
+    const cut  = svg.querySelector("#cut");
+    const innerShield = svg.querySelector("#innerShield");
+
+    const W = 1000, H = 900;
+    const margin = 80;
+
+    const baseLeft  = [margin, H - margin];
+    const baseRight = [W - margin, H - margin];
+    const A = equilateralFromBase(baseLeft, baseRight);
+    const B = baseLeft;
+    const C = baseRight;
+
+    const big = document.createElementNS(NS, "polygon");
+    big.setAttribute("points", pts([A, B, C]));
+    big.setAttribute("fill", "white");
+    keep.appendChild(big);
+
+    const depth = 3;
+
+    const opt = {
+      shieldWScale: .7,
+      shieldHScale: .9,
+      shieldYOffset: -25,
+
+      shieldTopAngleDeg: 140,
+      shieldBottomCurviness: 2.5,
+
+      // 参数3：盾牌内容（内盾）大小比例：0.8 = 80%
+      innerShieldScale: 0.7,
+      innerShieldColor: "#b51f2a",
+
+      // 新增参数4：内盾牌上下偏移（px，正数向下，负数向上）
+      innerShieldYOffset: 10
+    };
+
+    sierpinskiCut(A, B, C, depth, 0, cut, innerShield, opt);
+  })();
+</script>
+</body>
+</html>

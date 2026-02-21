@@ -1,0 +1,109 @@
+﻿@import "tailwindcss";
+
+/* 定义 Roboto 字体族 */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 定义 Noto Sans CJK 字体族 */
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Thin.ttc') format('collection');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Light.ttc') format('collection');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Regular.ttc') format('collection');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Medium.ttc') format('collection');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Bold.ttc') format('collection');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'Noto Sans CJK';
+    src: url('/fonts/NotoSansCJK-Black.ttc') format('collection');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 设置全局字体 fallback */
+:root {
+    --font-sans: 'Roboto', 'Noto Sans CJK', system-ui, sans-serif;
+}
+
+body {
+    font-family: var(--font-sans);
+}

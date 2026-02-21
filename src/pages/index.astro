@@ -1,0 +1,637 @@
+---
+import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
+import { Icon } from 'astro-icon/components'
+import FractalLogo from '../components/FractalLogo.tsx';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+---
+
+<Layout>
+
+	<div class="fixed top-2 right-6 z-50 group">
+		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white font-mono font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
+			<Icon name="mdi:web" class="w-5 h-5" />
+			EN / English
+			<Icon name="mdi:chevron-down" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-300" />
+		</button>
+		<div class="absolute right-0 top-full mt-1 w-full bg-white border-2 border-[#D00000] shadow-2xl opacity-0 invisible translate-y-[-10px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 flex flex-col">
+			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-white bg-[#D00000] font-mono font-bold text-center flex justify-center items-center gap-2 border-b-2 border-red-700">
+				English <Icon name="mdi:check" class="w-4 h-4" />
+			</a>
+			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-[#D00000] font-mono font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center">中文 (ZH)</a>
+		</div>
+	</div>
+
+
+
+	<div id="main-interface" class="min-h-screen w-full flex transition-opacity duration-300">
+		<div class="w-1/3 min-w-[700px] bg-[#D00000] relative">
+
+
+			<div class="sticky top-0 w-full h-screen overflow-hidden flex flex-col">
+				<div class="h-1/3 w-full flex items-center justify-center">
+					<h2 class="text-white text-9xl font-black tracking-widest uppercase drop-shadow-lg mb-32">
+						Fractal
+					</h2>
+				</div>
+				<div class="h-2/3 w-full">
+					<FractalLogo client:load />
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="w-2/3 min-h-screen bg-white flex flex-col py-12 px-16 relative overflow-hidden">
+
+			<div id="header-container" class="opacity-100 transform-none">
+				<h1 class="text-[#D00000] text-7xl font-black mb-2 tracking-wide uppercase">
+					<span id="title-main">WARNING / ACCESS CONTROL</span><br/>
+					<span class="text-5xl inline-flex items-center gap-3">
+						<span id="title-sub">Fractal Shelter</span>
+						<Icon class="inline-block w-18 h-18" id="hero-logo" name="logo" transition:name="fractal-logo"></Icon>
+					</span>
+				</h1>
+			</div>
+
+			<div id="terminal-panel" class="border-l-4 border-[#D00000] bg-red-50 px-4 py-2 my-4 flex flex-col min-h-[80px]">
+				<div id="terminal-info" class="opacity-100 py-2 transform-none">
+					<p class="text-gray-700 text-lg font-medium">
+						<span class="font-black">Terminal ID:</span> FS-001 / Fractal Recursive Node<br/>
+						<span class="font-black">Clearance:</span> Observer (Temporary)
+					</p>
+				</div>
+				<div id="log-container" class="hidden flex-col justify-end h-full font-mono text-gray-700 overflow-y-auto space-y-[4px] pb-2 text-sm pr-2">
+				</div>
+			</div>
+
+			<div id="progress-wrapper" class="w-full hidden opacity-0 mt-2 mb-4 shrink-0 flex-col gap-2">
+				<div class="text-[#D00000] font-mono text-xs font-bold tracking-widest uppercase">System Initialization Progress</div>
+				<div class="w-full p-1 border border-red-200 bg-red-50/50">
+					<div id="progress-bar" class="h-5 w-full"></div>
+				</div>
+			</div>
+
+			<div id="disclaimer-content" class="opacity-100 flex flex-col flex-grow transform-none">
+				<div class="mb-4">
+					<h2 class="text-[#D00000] font-black text-xl mb-2 flex items-center gap-2">
+						<Icon name="mdi:warning-box" class="w-6 h-6" />
+						Content Warning:
+					</h2>
+					<p class="text-gray-600 text-base leading-relaxed">
+						This game is presented as an "internal system" and may include internal bulletins, incident replays, training text, and unstable narrative structures.
+						Content may cause discomfort, including (but not limited to): <span class="text-gray-800">oppressive atmosphere, being-watched sensations, intrusive dreams, brief derealization, and fixation on—or resistance to—"rules".</span>
+					</p>
+				</div>
+
+				<div class="mb-4">
+					<h2 class="text-[#D00000] font-black text-xl mb-3">By Proceeding, You Acknowledge:</h2>
+					<ul class="space-y-2 text-base text-gray-600">
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">Fiction Notice:</span> this is a fictional interactive experience; all persons, organizations, documents, and anomalies are invented.</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">Self-Assessment:</span> you are responsible for your condition. If you feel palpitations, breathing difficulty, intense anxiety, flashbacks, etc., exit immediately and rest.</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">Audience Restriction:</span> not recommended for users under 16, those prone to panic/sleep disorders, or with photosensitive seizure risk.</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">Safe Environment:</span> use only in a safe, interruptible setting; do not access while driving/operating machinery.</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">Data Logging:</span> anonymous technical logs (device/performance/error data) may be collected for stability and debugging.</p>
+						</li>
+						<li class="flex gap-2 items-start">
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
+							<p><span class="font-bold text-gray-700">No Misuse:</span> do not use terminal content for real-world intimidation, defamation, or "official-document" forgery.</p>
+						</li>
+					</ul>
+				</div>
+
+				<div class="mb-6">
+					<h2 class="text-[#D00000] font-black text-xl mb-3">OBSERVER NOTICE</h2>
+					<div class="grid grid-cols-2 gap-4 text-base">
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;Fractal Shelter/Status&gt;</span><br/>
+								This is a game. Any "orders" are narrative devices only.
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;Fractal Shelter/Consent&gt;</span><br/>
+								Proceeding confirms informed consent to psychological-horror elements.
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;Fractal Shelter/Use&gt;</span><br/>
+								Do not use this game as evidence, instruction, or authority in real life.
+							</p>
+						</div>
+						<div>
+							<p class="text-gray-600">
+								<span class="font-black text-gray-700">&lt;Fractal Shelter/Exit&gt;</span><br/>
+								You may terminate the session at any time. The system will not prevent you.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="mb-4 border-t border-gray-200 pt-4">
+					<p class="text-gray-500 text-sm italic">
+						<span class="text-[#D00000] font-semibold not-italic">NOTE:</span> A fractal is a geometric figure in which each part has the same statistical character as the whole.<br/>
+						<span class="text-gray-600">Each rule you read alters the next iteration of what you are shown.</span>
+					</p>
+				</div>
+
+
+				<div class="flex gap-4 mt-auto mb-4">
+					<button id="btn-exit" class="px-8 py-3 border-2 border-gray-400 text-gray-600 font-semibold hover:bg-gray-100 transition-colors">
+						EXIT TERMINAL
+					</button>
+					<button id="btn-accept" class="px-12 py-3 bg-[#D00000] text-white font-semibold hover:bg-[#B00000] transition-colors">
+						I ACCEPT — PROCEED
+					</button>
+				</div>
+			</div>
+
+			<p class="mt-auto text-gray-400 text-xs shrink-0">
+				© 2026 Fractal Shelter — All procedures are final.
+			</p>
+		</div>
+	</div>
+
+	<div id="modal-exit" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm">
+		<div id="modal-exit-box" class="bg-white border-l-8 border-[#D00000] shadow-2xl w-[500px] p-8 flex flex-col">
+			<h2 class="text-3xl font-black text-[#D00000] flex items-center gap-3 mb-4 uppercase tracking-wide">
+				<Icon name="mdi:alert" class="w-8 h-8" />
+				Terminate Session?
+			</h2>
+			<p class="text-gray-700 text-base font-medium mb-8 leading-relaxed">
+				You are about to sever the connection to the Fractal Recursive Node. <br/><br/>
+				<span class="text-[#D00000] font-bold">WARNING:</span> This action is irreversible. Immediate cognitive decoupling may cause temporary disorientation.
+			</p>
+			<div class="flex justify-end gap-4 mt-auto">
+				<button id="btn-cancel-exit" class="px-6 py-2 border-2 border-gray-400 text-gray-600 font-bold hover:bg-gray-100 transition-colors">
+					CANCEL
+				</button>
+				<button id="btn-confirm-exit" class="px-6 py-2 bg-[#D00000] text-white font-bold hover:bg-[#b00000] transition-colors">
+					CONFIRM TERMINATION
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="page-404" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center bg-[#D00000] text-white">
+		<div class="flex flex-col items-center select-none text-center">
+			<Icon class="w-32 h-32 mb-6 opacity-90" name="logo"></Icon>
+			<h1 class="text-[12rem] leading-none font-black tracking-widest drop-shadow-xl">404</h1>
+			<div class="h-2 w-full bg-white my-4 opacity-50"></div>
+			<h2 class="text-4xl font-bold tracking-widest uppercase mb-4 shadow-black drop-shadow-md">Connection Severed</h2>
+			<p class="text-xl font-mono text-red-100 max-w-xl opacity-80 mt-4 leading-relaxed">
+				>> ERR_HOST_UNREACHABLE<br/>
+				>> The terminal session has been terminated by the operator.<br/>
+				>> No signal detected from FS-001.
+			</p>
+		</div>
+	</div>
+
+
+	<div id="ff-ring" class="fixed top-0 left-0 w-24 h-24 pointer-events-none z-[9999] opacity-0 scale-50">
+		<svg class="w-full h-full" viewBox="0 0 100 100">
+			<circle cx="50" cy="50" r="20" fill="none" stroke="rgba(208, 0, 0, 0.2)" stroke-width="6"></circle>
+			<circle id="ff-ring-circle" cx="50" cy="50" r="20" fill="none" stroke="#D00000" stroke-width="6" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" transform="rotate(-90 50 50)"></circle>
+		</svg>
+	</div>
+
+
+
+</Layout>
+
+
+<style>
+	#progress-bar {
+		--cell: 16px;
+		--fill: #D00000;
+		--bg: #fee2e2;
+		--p: 0;
+		background: repeating-linear-gradient(90deg, var(--bg) 0 12px, transparent 12px var(--cell));
+		position: relative;
+		overflow: hidden;
+	}
+	#progress-bar::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		width: calc(var(--p) * 100%);
+		background: repeating-linear-gradient(90deg, var(--fill) 0 12px, transparent 12px var(--cell));
+	}
+	.typed-cursor {
+		color: #D00000;
+		font-weight: bold;
+	}
+	/* 自定义滚动条样式，让控制台更硬核 */
+	#log-container::-webkit-scrollbar {
+		width: 6px;
+	}
+	#log-container::-webkit-scrollbar-track {
+		background: #fee2e2;
+	}
+	#log-container::-webkit-scrollbar-thumb {
+		background: #D00000;
+	}
+</style>
+
+<script>
+
+	import { gsap } from "gsap";
+	import Typed from "typed.js";
+	import { navigate } from 'astro:transitions/client';
+
+	const btnAccept = document.getElementById('btn-accept');
+	const btnExit = document.getElementById('btn-exit');
+	const modalExit = document.getElementById('modal-exit');
+	const modalExitBox = document.getElementById('modal-exit-box');
+	const btnCancelExit = document.getElementById('btn-cancel-exit');
+	const btnConfirmExit = document.getElementById('btn-confirm-exit');
+	const page404 = document.getElementById('page-404');
+	const mainInterface = document.getElementById('main-interface');
+
+	const initSequence = [
+		"BOOT_SEQ_INIT>> starting base kernel v9.4.1...",
+		"SYS_CHK>> CPU architecture: x86_64 [OK]",
+		"SYS_CHK>> Physical memory map verified.",
+		"LOADING modules: sys_core, mem_alloc, net_stack...",
+		"MOUNTING virtual filesystems...",
+		"  -> /dev [OK]",
+		"  -> /sys [OK]",
+		"  -> /proc [OK]",
+		"STARTING subsystem: crypto_engine",
+		"  -> generating entropy... DONE",
+		"  -> checking RSA-4096 protocols... OK",
+		"NET_INIT>> configuring neural subnet...",
+		"ESTABLISHING secure channel to FS-001...",
+		"HANDSHAKE: [tx: 1024 bytes] [rx: 1024 bytes] - SUCCESS",
+		"NODE IDENTIFIED: Fractal Recursive Node",
+		"INTEGRITY>> checksum: 9a3b8c2d1e5f... MATCH",
+		"SYNC>> pulling latest node configuration...",
+		"  -> downloading block 0x001... OK",
+		"  -> downloading block 0x002... OK",
+		"  -> downloading block 0x003... OK",
+		"  -> downloading block 0x004... OK",
+		"  -> assembling block structure... SUCCESS",
+		"WARNING>> partial structural anomalies detected in sector 4.",
+		"  -> ERROR: entity containment fluctuation.",
+		"  -> routing around anomalous zones... DONE",
+		"PROFILE>> fetching operator data...",
+		"  -> operator profile: OBSERVER (TEMP)",
+		"CLEARANCE>> querying access matrix...",
+		"  -> clearance granted: OBSERVER / restricted",
+		"POLICY>> loading memetic safety policy...",
+		"FILTER>> cognition hazard FILTER: ENABLED (baseline)",
+		"DAEMON>> starting fractal tracking daemon...",
+		"READY>> session token issued (tk_99x81f...)",
+		"ACCESS>> synchronizing neural interface...",
+		"COMPLETE>> welcome to the shelter."
+	];
+
+	function formatLogLine(line) {
+		return line.replace(/\b(DENIED|WARNING|ERROR|FILTER|COMPLETE|SUCCESS|OK)\b/g, match => {
+			if (['WARNING', 'ERROR', 'DENIED', 'FILTER'].includes(match)) {
+				return `<span class="text-[#D00000] font-bold">${match}</span>`;
+			}
+			return `<span class="text-gray-900 font-bold">${match}</span>`;
+		});
+	}
+
+	const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+	// ==========================================
+	// 1. 初始化终端启动序列
+	// ==========================================
+	btnAccept.addEventListener('click', () => {
+		btnAccept.disabled = true;
+		const tl = gsap.timeline();
+
+		tl.to(['#disclaimer-content', '#terminal-info', '#header-container'], {
+			opacity: 0,
+			y: -20,
+			duration: 0.5,
+			ease: "power2.inOut",
+			onComplete: () => {
+				document.getElementById('disclaimer-content').classList.add('hidden');
+				document.getElementById('terminal-info').classList.add('hidden');
+				document.getElementById('log-container').classList.remove('hidden');
+				document.getElementById('log-container').classList.add('flex');
+				document.getElementById('progress-wrapper').classList.remove('hidden');
+				document.getElementById('progress-wrapper').classList.add('flex');
+
+				document.getElementById('title-main').textContent = "INITIALIZATION";
+				document.getElementById('title-sub').textContent = "Terminal Access";
+			}
+		})
+			.to('#header-container', { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
+			.to('#terminal-panel', { flexGrow: 1, paddingTop: "2rem", paddingBottom: "2rem", duration: 0.8, ease: "power3.inOut" }, "-=0.2")
+			.to('#progress-wrapper', { opacity: 1, duration: 0.4 })
+			.call(() => {
+				isTerminalRunning = true;
+				startLogSequence();
+			});
+	});
+
+	async function startLogSequence() {
+		const progressBar = document.getElementById('progress-bar');
+		const logContainer = document.getElementById('log-container');
+		const totalSteps = initSequence.length;
+
+		for (let i = 0; i < totalSteps; i++) {
+			const line = initSequence[i];
+			const formattedLine = formatLogLine(line);
+
+			const p = document.createElement('p');
+			const typeTarget = document.createElement('span');
+			p.appendChild(typeTarget);
+			logContainer.appendChild(p);
+
+			let tSpeed = 1;
+			let postDelay = 20;
+			if (line.includes("WARNING") || line.includes("ERROR")) { tSpeed = 10; postDelay = 350; }
+			else if (line.includes("SUCCESS") || line.includes("COMPLETE")) { postDelay = 200; }
+
+			// --- 替换开始 ---
+			await new Promise((resolve) => {
+				resolveActiveLine = () => {
+					if (activeTyped) {
+						activeTyped.destroy(); // 停掉打字机
+						activeTyped = null;
+					}
+					typeTarget.innerHTML = formattedLine; // 直接印出整行文字
+					resolveActiveLine = null;
+					resolve();
+				};
+
+				if (isFastForward) {
+					// 加速状态下：不走打字动画，直接印出整行文字
+					typeTarget.innerHTML = formattedLine;
+					resolveActiveLine = null;
+					resolve();
+				} else {
+					// 正常模式
+					activeTyped = new Typed(typeTarget, {
+						strings: [formattedLine],
+						typeSpeed: tSpeed,
+						showCursor: true,
+						cursorChar: '█',
+						contentType: 'html',
+						onStringTyped: (pos, self) => {
+							if (i < totalSteps - 1) self.cursor.remove();
+							activeTyped = null;
+							resolveActiveLine = null;
+							resolve();
+						}
+					});
+					const scrollInterval = setInterval(() => { logContainer.scrollTop = logContainer.scrollHeight; }, 50);
+					activeTyped.options.onComplete = () => clearInterval(scrollInterval);
+				}
+			});
+
+			gsap.to(progressBar, { '--p': (i + 1) / totalSteps, duration: 0.1 });
+			logContainer.scrollTop = logContainer.scrollHeight; // 强制滚动到底部
+
+			await interruptibleSleep(postDelay); // 这里会根据是否按住鼠标，决定是停顿很久，还是停顿 30ms
+			// --- 替换结束 ---
+		}
+
+		// ==========================================
+		// 在日志容器最底部生成 [ ENTER ] 按钮
+		// ==========================================
+		await sleep(400); // 稍微停顿一下更有戏剧性
+		const enterBtnWrap = document.createElement('div');
+		enterBtnWrap.className = "mt-4 flex";
+
+		const enterBtn = document.createElement('button');
+		enterBtn.className = "px-8 py-2 bg-[#D00000] text-white font-bold tracking-widest uppercase cursor-pointer hover:bg-[#a00000] transition-colors border-2 border-transparent animate-pulse";
+		enterBtn.textContent = "[ ENTER ]";
+		enterBtn.onclick = () => {
+
+			document.body.style.overflow = 'hidden';
+			enterBtn.disabled = true;
+			enterBtn.textContent = "[ OVERRIDING... ]";
+			enterBtn.classList.remove('animate-pulse');
+
+			// 1. 获取要移动的 Icon
+			const logoEl = document.getElementById('hero-logo');
+			if (!logoEl) {
+				console.error("找不到 ID 为 hero-logo 的元素，请检查 HTML。");
+				return;
+			}
+
+			// --- 关键修复：把 Logo 从马上要消失的父元素里“摘”出来 ---
+			const logoRect = logoEl.getBoundingClientRect();
+			document.body.appendChild(logoEl);
+
+			// 给它绝对定位，临时钉死在它刚才的准确位置，并脱离原有的层级束缚
+			gsap.set(logoEl, {
+				position: "fixed",
+				left: logoRect.left,
+				top: logoRect.top,
+				x: 0,
+				y: 0,
+				zIndex: 9999,
+				margin: 0,
+				transformOrigin: "50% 50%" // Ensures it scales from its center
+			});
+
+			// 计算目标坐标（到屏幕中心的偏移量）
+			const targetX = (window.innerWidth / 2) - (logoRect.left + logoRect.width / 2);
+			const targetY = (window.innerHeight / 2) - (logoRect.top + logoRect.height / 2)-200;
+
+			// 2. 动态创建中间那行红字 "FRACTAL SHELTER"
+			const textEl = document.createElement('div');
+			textEl.textContent = "FRACTAL SHELTER";
+			textEl.className = "fixed left-1/2 top-1/2 -translate-x-1/2 translate-y-[120px] text-[#D00000] text-8xl font-black tracking-[0.1em] uppercase opacity-0 z-50 pointer-events-none ";
+			document.body.appendChild(textEl);
+
+			// 3. 构建时间轴
+			const tl = gsap.timeline({
+				onComplete: () => {
+					// 3. Use Astro's navigate instead of window.location.href
+					navigate("/onboarding");
+				}
+			});
+
+			// 开始退场和跃迁前置动画
+			tl.to(['.w-2\\/3.bg-white', '.sticky > div'], {
+				opacity: 0,
+				duration: 0.4,
+				ease: "power2.inOut"
+			})
+				.to('.w-1\\/3.bg-\\[\\#D00000\\]', {
+					backgroundColor: '#FFFFFF',
+					width: "100%",
+					duration: 0.6,
+					ease: "power3.inOut"
+				}, "<")
+				.to(logoEl, {
+					x: targetX,
+					y: targetY,
+					scale: 10, // 4. Increase scale significantly for a massive center logo
+					duration: 0.8,
+					ease: "power3.inOut"
+				}, "<")
+				.to(textEl, { opacity: 1, y: "+=10", duration: 0.5, ease: "power2.out" })
+				.to(textEl, { opacity: 1, duration: 0.8 })
+				.to(textEl, { opacity: 0, scale: 0.9, duration: 0.3, ease: "power2.in" })
+				// Optionally fade out the giant logo right before navigation so Astro's ViewTransition can pick it up smoothly
+				.to(logoEl, { opacity: 0, duration: 0.3 }, "<");
+		};
+
+		enterBtnWrap.appendChild(enterBtn);
+		logContainer.appendChild(enterBtnWrap);
+
+		// 最后一次滚动到底部以确保按钮可见
+		gsap.fromTo(enterBtnWrap, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 });
+		logContainer.scrollTop = logContainer.scrollHeight;
+
+		isTerminalRunning = false; // 终端跑完了，关闭全局快进监听
+	}
+
+	// ==========================================
+	// 2. 退出弹窗逻辑 (GSAP 动画)
+	// ==========================================
+	btnExit.addEventListener('click', () => {
+		modalExit.classList.remove('hidden');
+		// 背景淡入
+		gsap.fromTo(modalExit, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+		// 弹窗本体从下往上带一点阻尼感弹出
+		gsap.fromTo(modalExitBox,
+			{ y: 30, scale: 0.95 },
+			{ y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }
+		);
+	});
+
+	btnCancelExit.addEventListener('click', () => {
+		gsap.to(modalExit, {
+			opacity: 0,
+			duration: 0.2,
+			onComplete: () => modalExit.classList.add('hidden')
+		});
+	});
+
+	// ==========================================
+	// 3. 沉浸式 404 页面
+	// ==========================================
+	btnConfirmExit.addEventListener('click', () => {
+		// 阻断后面的交互
+		btnConfirmExit.disabled = true;
+
+		page404.classList.remove('hidden');
+		page404.classList.add('flex');
+
+		// 制作短促的视觉 Glitch 闪屏效果，然后切到纯红 404
+		const tl = gsap.timeline();
+		tl.to(modalExit, { opacity: 0, duration: 0.1 })
+			.set(page404, { opacity: 0 })
+			.to(page404, { opacity: 1, duration: 0.05 }) // 闪烁 1
+			.to(page404, { opacity: 0, duration: 0.05 })
+			.to(page404, { opacity: 1, duration: 0.1 })  // 闪烁 2
+			.to(page404, { opacity: 0.8, duration: 0.05 })
+			.to(page404, { opacity: 1, duration: 0.2, onComplete: () => {
+					// 动画结束后，把底层的结构隐藏掉，释放性能
+					mainInterface.classList.add('hidden');
+					modalExit.classList.add('hidden');
+				}});
+	});
+
+
+
+	// ==========================================
+	// 新增加速控制状态与逻辑
+	// ==========================================
+	let isTerminalRunning = false;
+	let isFastForward = false;
+	let activeTyped = null;
+	let resolveActiveLine = null;
+	let sleepResolve = null;
+	let sleepTimeout = null;
+	let ringTween = null; // 【新增】用于保存圆环的循环旋转动画
+
+	const ffRing = document.getElementById('ff-ring');
+	const ffCircle = document.getElementById('ff-ring-circle');
+
+	// 让圆环中心对准鼠标
+	gsap.set(ffRing, { xPercent: -50, yPercent: -50 });
+
+	window.addEventListener('mousemove', (e) => {
+		gsap.to(ffRing, { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
+	});
+
+	function triggerFastForward() {
+		isFastForward = true;
+
+		// 1. UI 反馈：圆环放大显现
+		gsap.to(ffRing, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" });
+
+		// 【修改】：让圆环变成不停旋转的“雷达/加载”效果，每0.8秒转一圈
+		if (!ringTween) {
+			gsap.set(ffCircle, { strokeDashoffset: 251.2 });
+			ringTween = gsap.to(ffCircle, { strokeDashoffset: 0, duration: 0.8, ease: "none", repeat: -1 });
+		} else {
+			ringTween.play();
+		}
+
+		// 2. 打断正在进行的长休眠
+		if (sleepResolve) {
+			clearTimeout(sleepTimeout);
+			sleepResolve();
+			sleepResolve = null;
+		}
+		// 3. 打断当前的打字动画，立刻印出这行
+		if (resolveActiveLine) {
+			resolveActiveLine();
+		}
+	}
+
+	function stopFastForward() {
+		isFastForward = false;
+		// UI 隐藏：圆环缩小消失，暂停旋转
+		gsap.to(ffRing, { opacity: 0, scale: 0.8, duration: 0.2 });
+		if (ringTween) ringTween.pause();
+	}
+
+	window.addEventListener('mousedown', (e) => {
+		if (!isTerminalRunning) return;
+		if (e.target.tagName.toLowerCase() === 'button') return;
+		triggerFastForward();
+	});
+
+	window.addEventListener('mouseup', () => { if (isFastForward) stopFastForward(); });
+	window.addEventListener('mouseleave', () => { if (isFastForward) stopFastForward(); });
+
+	// --- 核心修复：可被打断的延时函数 ---
+	function interruptibleSleep(ms) {
+		return new Promise(resolve => {
+			sleepResolve = resolve;
+			if (isFastForward) {
+				// 【关键修复】：如果正在长按加速，保留 30 毫秒的极短停顿！
+				// 这样就不会“瞬间全出”，而是能看到文字像瀑布一样狂刷下来，同时给圆环旋转留出表现时间。
+				sleepTimeout = setTimeout(() => {
+					sleepResolve = null;
+					resolve();
+				}, 30);
+			} else {
+				sleepTimeout = setTimeout(() => {
+					sleepResolve = null;
+					resolve();
+				}, ms);
+			}
+		});
+	}
+</script>
