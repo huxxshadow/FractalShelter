@@ -462,8 +462,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			// 3. 构建时间轴
 			const tl = gsap.timeline({
 				onComplete: () => {
-					// 3. Use Astro's navigate instead of window.location.href
-					navigate(`${import.meta.env.BASE_URL}onboarding`);
+					navigate("./onboarding");
 				}
 			});
 
