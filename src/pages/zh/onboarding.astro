@@ -1,16 +1,16 @@
 ﻿---
-import Layout from '../layouts/Layout.astro';
-import "../styles/global.css";
+import Layout from '../../layouts/Layout.astro';
+import "../../styles/global.css";
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
-import guideImage from '../assets/character1.png';
+import guideImage from '../../assets/character1.png';
 ---
 
 <Layout>
-    <div class="min-h-screen bg-white flex flex-col p-6 pb-0 overflow-hidden selection:bg-[#D00000] selection:text-white">
+    <div id="main-interface" data-lang="zh" class="min-h-screen bg-white flex flex-col p-6 pb-0 overflow-hidden selection:bg-[#D00000] selection:text-white">
         <header class=" mb-4 border-b-12 border-[#D00000] pb-4 flex justify-between items-end shrink-0">
             <h1 class="text-[#D00000] text-6xl font-black tracking-wide uppercase">
-                Welcome to Fractal Shelter
+                欢迎来到分形庇护所
             </h1>
             <Icon class="inline-block w-16 h-16 text-[#D00000] " name="logo"  id="hero-logo" transition:name="fractal-logo"></Icon>
         </header>
@@ -20,12 +20,12 @@ import guideImage from '../assets/character1.png';
             <section class="col-span-9 flex flex-col relative overflow-hidden pr-0 bg-transparent border-none">
 
                 <div class="flex items-center gap-4 mb-4 text-[#D00000]">
-                    <h2 id="section-title" class="text-5xl font-black tracking-widest uppercase">Session Handshake</h2>
+                    <h2 id="section-title" class="text-5xl font-black tracking-widest uppercase">会话握手</h2>
 
                     <div class="h-3 flex-grow bg-gray-100 relative">
                         <div id="handshake-progress-bar" class="absolute top-0 left-0 h-full bg-[#D00000] w-0"></div>
                     </div>
-                    <span id="handshake-status" class=" text-xl font-bold uppercase text-gray-400 min-w-[120px] text-right">Pending</span>
+                    <span id="handshake-status" class=" text-xl font-bold uppercase text-gray-400 min-w-[120px] text-right">等待中</span>
                 </div>
 
                 <div id="handshake-container" class="flex-grow relative w-full mt-8 mb-8">
@@ -39,62 +39,62 @@ import guideImage from '../assets/character1.png';
                             <button class="node-btn group relative outline-none" data-index="0">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">01</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Link</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">链接</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="1">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">02</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Auth</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">认证</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="2">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">03</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Sync</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">同步</span>
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="5">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">06</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Route</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">路由</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="4">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">05</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Decrypt</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">解密</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="3">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">04</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Verify</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">验证</span>
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="6">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">07</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Map</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">映射</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="7">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">08</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Inject</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">注入</span>
                         </div>
                         <div class="flex flex-col items-center justify-center">
                             <button class="node-btn group relative outline-none" data-index="8">
                                 <span class="block bg-white px-4 text-6xl font-black text-gray-200 transition-colors duration-150">09</span>
                             </button>
-                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">Connect</span>
+                            <span class="node-label mt-4  text-xl uppercase tracking-widest text-gray-300 transition-colors duration-150 bg-white px-2 relative z-10">连接</span>
                         </div>
                     </div>
 
                     <button id="btn-handshake-complete" class="absolute bottom-4 right-8 opacity-0 pointer-events-none translate-y-4 px-10 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-colors hover:bg-[#a00000] z-20">
-                        Connect
+                        建立连接
                     </button>
                 </div>
 
@@ -103,24 +103,24 @@ import guideImage from '../assets/character1.png';
                         <Icon name="mdi:card-account-details-outline" class="absolute -bottom-10 -right-10 w-64 h-64 text-gray-100 rotate-12 pointer-events-none" />
 
                         <div class="relative z-10">
-                            <h3 class="text-4xl font-black text-[#D00000] uppercase mb-8 tracking-wide">Subject Registration</h3>
+                            <h3 class="text-4xl font-black text-[#D00000] uppercase mb-8 tracking-wide">受试者登记</h3>
 
                             <div class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="flex flex-col group">
                                         <label class="text-base font-black text-gray-400 uppercase tracking-widest mb-2 group-focus-within:text-[#D00000] transition-colors" for="legal-name">
-                                            Legal Name <span class="text-[#D00000]">*</span>
+                                            姓名 <span class="text-[#D00000]">*</span>
                                         </label>
-                                        <input type="text" id="legal-name" maxlength="24" class="bg-white border-2 border-gray-200 p-3 font-bold text-lg  text-gray-800 focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all placeholder:text-gray-300" placeholder="Enter your legal name..." autocomplete="off" />
-                                        <span id="name-error" class="text-xs text-[#D00000] mt-1 hidden ">Name is required and cannot be purely spaces.</span>
+                                        <input type="text" id="legal-name" maxlength="24" class="bg-white border-2 border-gray-200 p-3 font-bold text-lg  text-gray-800 focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all placeholder:text-gray-300" placeholder="请输入姓名..." autocomplete="off" />
+                                        <span id="name-error" class="text-xs text-[#D00000] mt-1 hidden ">姓名为必填项，且不能仅包含空格。</span>
                                     </div>
                                     <div class="flex flex-col group relative">
                                         <label class="text-base font-black font-bold text-gray-400 uppercase tracking-widest mb-2 group-focus-within:text-[#D00000] transition-colors" for="codename">
-                                            Codename / Alias
+                                            代号 / 别名
                                         </label>
-                                        <input type="text" id="codename" maxlength="20" class="bg-white border-2 border-gray-200 p-3 text-lg font-bold text-gray-800 focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all placeholder:text-gray-300" placeholder="Optional (e.g., ARCH-02)" autocomplete="off" />
+                                        <input type="text" id="codename" maxlength="20" class="bg-white border-2 border-gray-200 p-3 text-lg font-bold text-gray-800 focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all placeholder:text-gray-300" placeholder="选填（例如：ARCH-02）" autocomplete="off" />
                                         <div id="draft-badge" class="absolute right-3 top-[48px] opacity-0 transition-opacity pointer-events-none">
-                                            <span class="bg-gray-100 text-gray-400 border border-gray-200 text-[12px] font-black px-2 py-1 rounded-sm uppercase tracking-widest">Draft</span>
+                                            <span class="bg-gray-100 text-gray-400 border border-gray-200 text-[12px] font-black px-2 py-1 rounded-sm uppercase tracking-widest">草稿</span>
                                         </div>
                                     </div>
                                 </div>
@@ -128,13 +128,13 @@ import guideImage from '../assets/character1.png';
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="flex flex-col group">
                                         <label class=" text-base font-black font-bold text-gray-400 uppercase tracking-widest mb-2 group-focus-within:text-[#D00000] transition-colors" for="age">
-                                            Age <span class="text-[#D00000]">*</span>
+                                            年龄 <span class="text-[#D00000]">*</span>
                                         </label>
                                         <div class="relative">
                                             <select id="age" class="w-full bg-white border-2 border-gray-200 p-3 text-lg text-gray-400 font-bold focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all appearance-none cursor-pointer">
-                                                <option value="" selected disabled hidden>Select Age...</option>
+                                                <option value="" selected disabled hidden>选择年龄...</option>
                                                 {Array.from({ length: 45 }, (_, i) => i + 16).map((age) => (
-                                                        <option value={age}>{age}</option>
+                                                        <option value={age}>{age}岁</option>
                                                 ))}
                                             </select>
                                             <Icon name="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400 pointer-events-none" />
@@ -143,17 +143,17 @@ import guideImage from '../assets/character1.png';
 
                                     <div class="flex flex-col group">
                                         <label class=" text-base font-black text-gray-400 uppercase tracking-widest mb-2 group-focus-within:text-[#D00000] transition-colors" for="month">
-                                            Birth Month <span class="text-[#D00000]">*</span>
+                                            出生月份 <span class="text-[#D00000]">*</span>
                                         </label>
                                         <div class="relative">
                                             <select id="month" class="w-full bg-white border-2 border-gray-200 p-3 text-lg text-gray-400 font-bold focus:text-[#D00000] focus:outline-none focus:border-[#D00000] focus:ring-4 focus:ring-red-50 transition-all appearance-none cursor-pointer">
-                                                <option value="" selected disabled hidden>Select Month...</option>
+                                                <option value="" selected disabled hidden>选择月份...</option>
 
                                                 {[
-                                                    {val: 1, label: "01 - JAN"}, {val: 2, label: "02 - FEB"}, {val: 3, label: "03 - MAR"},
-                                                    {val: 4, label: "04 - APR"}, {val: 5, label: "05 - MAY"}, {val: 6, label: "06 - JUN"},
-                                                    {val: 7, label: "07 - JUL"}, {val: 8, label: "08 - AUG"}, {val: 9, label: "09 - SEP"},
-                                                    {val: 10, label: "10 - OCT"}, {val: 11, label: "11 - NOV"}, {val: 12, label: "12 - DEC"}
+                                                    {val: 1, label: "01 - 一月"}, {val: 2, label: "02 - 二月"}, {val: 3, label: "03 - 三月"},
+                                                    {val: 4, label: "04 - 四月"}, {val: 5, label: "05 - 五月"}, {val: 6, label: "06 - 六月"},
+                                                    {val: 7, label: "07 - 七月"}, {val: 8, label: "08 - 八月"}, {val: 9, label: "09 - 九月"},
+                                                    {val: 10, label: "10 - 十月"}, {val: 11, label: "11 - 十一月"}, {val: 12, label: "12 - 十二月"}
                                                 ].map(m => <option value={m.val}>{m.label}</option>)}
                                             </select>
                                             <Icon name="mdi:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400 pointer-events-none" />
@@ -162,7 +162,7 @@ import guideImage from '../assets/character1.png';
 
                                     <div class="flex flex-col group" id="gender-section">
                                         <label id="gender-label" class="text-base font-black text-gray-400 uppercase tracking-widest mb-2 transition-colors">
-                                            Gender <span class="text-[#D00000]">*</span>
+                                            性别 <span class="text-[#D00000]">*</span>
                                         </label>
 
                                         <div class="flex items-center gap-4 w-full h-[52px]">
@@ -203,7 +203,7 @@ import guideImage from '../assets/character1.png';
 
                                 <div class="flex flex-col pt-2">
                                     <label id="department-label" class=" text-base font-black text-gray-400 uppercase tracking-widest mb-3 transition-colors">
-                                        Department Assignment <span class="text-[#D00000]">*</span>
+                                        所属分支 <span class="text-[#D00000]">*</span>
                                     </label>
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
@@ -213,7 +213,7 @@ import guideImage from '../assets/character1.png';
                                             <div class="border-2 border-gray-200 bg-white text-[#D00000] p-4 transition-all flex flex-col items-center text-center h-full
                         hover:border-red-300 peer-checked:border-[#D00000] peer-checked:bg-[#D00000] peer-checked:text-white">
                                                 <Icon name="logo" class="w-16 h-16 group-hover:scale-110 transition-transform" />
-                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">Fractal</span>
+                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">分形</span>
                                             </div>
 
                                             <div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 transition-opacity">
@@ -224,7 +224,7 @@ import guideImage from '../assets/character1.png';
                                         <div class="locked-dept relative cursor-not-allowed group">
                                             <div class="border-2 border-[#0058C0] bg-[#0058C0] text-white p-4 transition-all flex flex-col items-center text-center h-full opacity-90 hover:opacity-100">
                                                 <Icon name="mdi:weather-hurricane" class="w-16 h-16 group-hover:scale-110 transition-transform" />
-                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">Obliteration</span>
+                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">湮灭</span>
                                             </div>
                                             <div class="absolute top-2 right-2 lock-icon">
                                                 <Icon name="mdi:lock" class="w-5 h-5 text-white/70" />
@@ -234,7 +234,7 @@ import guideImage from '../assets/character1.png';
                                         <div class="locked-dept relative cursor-not-allowed group">
                                             <div class="border-2 border-[#009900] bg-[#009900] text-white p-4 transition-all flex flex-col items-center text-center h-full opacity-90 hover:opacity-100">
                                                 <Icon name="mdi:seed-outline" class="w-16 h-16 group-hover:scale-110 transition-transform" />
-                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">Origin</span>
+                                                <span class="font-black tracking-wide text-3xl uppercase mt-2">起源</span>
                                             </div>
                                             <div class="absolute top-2 right-2 lock-icon">
                                                 <Icon name="mdi:lock" class="w-5 h-5 text-white/70" />
@@ -247,7 +247,7 @@ import guideImage from '../assets/character1.png';
 
                                 <div class="flex flex-col mt-4 pt-6 border-t-2 border-gray-100 group">
                                     <label id="clearance-label" class="text-base font-black text-gray-400 uppercase tracking-widest mb-3 transition-colors">
-                                        Initial Clearance <span class="text-[#D00000]">*</span>
+                                        初始许可等级 <span class="text-[#D00000]">*</span>
                                     </label>
 
                                     <label class="relative cursor-pointer">
@@ -263,14 +263,14 @@ import guideImage from '../assets/character1.png';
                                                     <Icon name="mdi:badge-account-horizontal-outline" class="status-icon w-8 h-8 text-gray-400 transition-colors" />
 
                                                     <div class="flex flex-col">
-                                                        <span class="text-xl font-black text-gray-800 uppercase tracking-widest">Intern</span>
-                                                        <span class="text-base font-bold text-gray-500 uppercase tracking-[0.2em] mt-0.5">Assigned Rank</span>
+                                                        <span class="text-xl font-black text-gray-800 uppercase tracking-widest">实习生</span>
+                                                        <span class="text-base font-bold text-gray-500 uppercase tracking-[0.2em] mt-0.5">分配职级</span>
                                                     </div>
                                                 </div>
 
                                                 <div class="flex flex-col items-end justify-center border-l-2 border-gray-100 pl-6">
-                                                    <span class="text-base font-bold text-gray-500 uppercase tracking-widest mb-1">Status</span>
-                                                    <span class="text-base font-black text-gray-500 uppercase tracking-widest ">Pre-Approved</span>
+                                                    <span class="text-base font-bold text-gray-500 uppercase tracking-widest mb-1">状态</span>
+                                                    <span class="text-base font-black text-gray-500 uppercase tracking-widest ">预审批</span>
                                                 </div>
 
                                             </div>
@@ -280,7 +280,7 @@ import guideImage from '../assets/character1.png';
 
                                 <div id="deployment-section" class="flex flex-col mt-4 pt-6 border-t-2 border-gray-100 group/node">
                                     <label class="text-base font-black text-gray-400 uppercase tracking-widest mb-3 transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">
-                                        Deployment Node
+                                        部署节点
                                     </label>
 
                                     <div class="bg-gray-50 border-2 border-gray-200 flex items-stretch h-16 relative select-none pointer-events-none transition-colors duration-500 group-[.is-ready]/node:border-[#D00000]">
@@ -296,15 +296,15 @@ import guideImage from '../assets/character1.png';
                                             <div class="flex items-center gap-5">
                                                 <Icon name="mdi:crosshairs-gps" class="w-7 h-7 text-gray-400 transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]" />
                                                 <div class="flex items-baseline gap-2">
-                                                    <span class="text-sm font-bold text-gray-400 uppercase tracking-widest transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">NODE:</span>
+                                                    <span class="text-sm font-bold text-gray-400 uppercase tracking-widest transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">节点:</span>
                                                     <span class="text-xl font-black text-gray-600 uppercase tracking-widest transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">FS-001</span>
                                                 </div>
                                             </div>
 
                                             <div class="flex flex-col items-end justify-center border-l-2 border-gray-200 pl-6 transition-colors duration-500 group-[.is-ready]/node:border-red-200">
-                                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">Access</span>
+                                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">访问权限</span>
                                                 <span class="text-sm font-black text-gray-500 uppercase tracking-widest transition-colors duration-500 group-[.is-ready]/node:text-[#D00000]">
-                                                    Read-Only
+                                                    只读
                                                 </span>
                                             </div>
 
@@ -317,7 +317,7 @@ import guideImage from '../assets/character1.png';
 
                             <div class="mt-12 flex justify-end">
                                 <button id="btn-submit-identity" class="px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed" disabled>
-                                    <span>Identity Registration</span>
+                                    <span>身份注册</span>
                                     <Icon name="mdi:fingerprint" class="w-6 h-6" />
                                 </button>
                             </div>
@@ -341,7 +341,7 @@ import guideImage from '../assets/character1.png';
                             <div class="w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 flex items-center justify-center z-10"></div>
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 rounded-l-md rounded-r-full shadow-lg">
-                                <span class="block text-3xl font-black tracking-wide uppercase whitespace-nowrap">PROCEDURE</span>
+                                <span class="block text-3xl font-black tracking-wide uppercase whitespace-nowrap">流程</span>
                                 <Icon name="mdi:loading" class="w-7 h-7 shrink-0 animate-spin ml-auto" />
                             </div>
                         </li>
@@ -351,9 +351,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:handshake" class="w-7 h-7 shrink-0 opacity-50 group-hover:scale-110 transition-transform" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Session Handshake</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">会话握手</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Pending
+                                    等待中
                                 </div>
                             </div>
                         </li>
@@ -363,9 +363,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:card-account-details-outline" class="w-7 h-7 shrink-0 opacity-50 group-hover:scale-110 transition-transform" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Identity Intake</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">身份录入</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -375,9 +375,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:file-document-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Disclosure</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">信息披露</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -387,9 +387,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:shield-check-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Vetting Check</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">背景审查</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -399,9 +399,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:badge-account-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Role Assignment</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">角色分配</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -411,9 +411,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:clipboard-check-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Clearance Audit</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">许可审核</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -423,9 +423,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:alert-octagon-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Safety Brief</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">安全简报</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -435,9 +435,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:tune" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Calibration</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">校准</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -447,9 +447,9 @@ import guideImage from '../assets/character1.png';
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:check-circle-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Complete</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">完成</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                                    Locked
+                                    锁定
                                 </div>
                             </div>
                         </li>
@@ -460,14 +460,14 @@ import guideImage from '../assets/character1.png';
             <section class="col-span-4 flex flex-col relative items-center justify-center pl-8">
                 <Image
                         src={guideImage}
-                        alt="Guide Unit"
+                        alt="引导单元"
                         width={1400} height={2000}
                         class="object-cover scale-150 origin-center -mb-100"
                 />
 
 
                 <div class="absolute bottom-0 right-0  text-sm text-gray-300">
-                    SECTOR_1/3
+                    扇区_1/3
                 </div>
             </section>
         </main>
@@ -524,7 +524,7 @@ import guideImage from '../assets/character1.png';
                         </svg>
                         <span class="block text-lg font-bold tracking-wide whitespace-nowrap">......</span>
                         <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
-                            Locked
+                            锁定
                         </div>
                     </div>
                 `;
@@ -606,7 +606,7 @@ import guideImage from '../assets/character1.png';
         handshakeTimeline = gsap.timeline({
             delay: 0.2,
             onComplete: () => {
-                statusText.textContent = "ESTABLISHED";
+                statusText.textContent = "已建立";
                 statusText.classList.replace('text-gray-400', 'text-[#D00000]');
                 statusText.classList.add('font-black');
                 stopFastForward(); // Turn off ring when done
@@ -633,7 +633,7 @@ import guideImage from '../assets/character1.png';
             const delay = ratio * totalDuration;
 
             handshakeTimeline.add(() => {
-                statusText.textContent = `SYNC_N${i+1}...`;
+                statusText.textContent = `同步节点_${i+1}...`;
                 const numSpan = node.querySelector('span');
                 numSpan.classList.replace('text-gray-200', 'text-[#D00000]');
                 label.classList.replace('text-gray-300', 'text-[#D00000]');
@@ -677,9 +677,27 @@ import guideImage from '../assets/character1.png';
     }
 
     // ==========================================
-    // 5. Astro ViewTransitions 核心接管逻辑
+    // 5. 停止快进函数
+    // ==========================================
+    function stopFastForward() {
+        isFastForward = false;
+        if (ffRing) gsap.to(ffRing, { opacity: 0, scale: 0.8, duration: 0.2 });
+
+        // Smoothly return timeline to normal speed
+        if (handshakeTimeline && handshakeTimeline.isActive()) {
+            gsap.to(handshakeTimeline, { timeScale: 1, duration: 0.2 });
+        }
+    }
+
+    // ==========================================
+    // 6. Astro ViewTransitions 核心接管逻辑
     // ==========================================
     document.addEventListener('astro:page-load', () => {
+
+        // 身份验证：只在中文页面执行
+        const mainInterface = document.getElementById('main-interface');
+        if (!mainInterface || mainInterface.dataset.lang !== 'zh') return;
+
         // 先生成占位列表，确保布局高度完整
         fillPlaceholderButtons();
 
@@ -743,7 +761,7 @@ import guideImage from '../assets/character1.png';
 
                         body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 cursor-pointer hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md";
                         badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
-                        badge.textContent = "Active";
+                        badge.textContent = "进行中";
                         dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
                         icon.classList.replace('opacity-50', 'opacity-100');
                         textSpan.classList.replace('font-bold', 'font-black');
@@ -763,10 +781,10 @@ import guideImage from '../assets/character1.png';
                         document.getElementById('identity-container').classList.remove('hidden');
 
                         // Update Header Text
-                        document.getElementById('section-title').textContent = "Identity Intake";
+                        document.getElementById('section-title').textContent = "身份录入";
 
                         const statusText = document.getElementById('handshake-status');
-                        statusText.textContent = "Awaiting Input";
+                        statusText.textContent = "等待输入";
                         statusText.classList.replace('text-[#D00000]', 'text-gray-400');
                         statusText.classList.remove('font-black');
 
@@ -803,219 +821,191 @@ import guideImage from '../assets/character1.png';
             gsap.to(handshakeTimeline, { timeScale: 8, duration: 0.2 });
         };
 
-        const stopFF = () => {
-            isFastForward = false;
-            if (ffRing) gsap.to(ffRing, { opacity: 0, scale: 0.8, duration: 0.2 });
-
-            // Smoothly return timeline to normal speed
-            if (handshakeTimeline && handshakeTimeline.isActive()) {
-                gsap.to(handshakeTimeline, { timeScale: 1, duration: 0.2 });
-            }
-        };
-
         window.addEventListener('mousedown', triggerFF);
-        window.addEventListener('mouseup', stopFF);
-        window.addEventListener('mouseleave', stopFF);
+        window.addEventListener('mouseup', stopFastForward);
+        window.addEventListener('mouseleave', stopFastForward);
 
         // Cleanup listeners when navigating away
         document.addEventListener('astro:before-swap', () => {
             window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('mousedown', triggerFF);
-            window.removeEventListener('mouseup', stopFF);
-            window.removeEventListener('mouseleave', stopFF);
+            window.removeEventListener('mouseup', stopFastForward);
+            window.removeEventListener('mouseleave', stopFastForward);
         }, { once: true });
-
-
-
-
-
-
-
-
-
-
-
-
 
     });
 
 
     // --- Identity Form Validation ---
-    const nameInput = document.getElementById('legal-name');
-    const codenameInput = document.getElementById('codename');
-    const draftBadge = document.getElementById('draft-badge');
-    const nameError = document.getElementById('name-error');
+    document.addEventListener('astro:page-load', () => {
+        // 身份验证：只在中文页面执行
+        const mainInterface = document.getElementById('main-interface');
+        if (!mainInterface || mainInterface.dataset.lang !== 'zh') return;
 
-    const ageSelect = document.getElementById('age');
-    const monthSelect = document.getElementById('month');
-    const genderRadios = document.querySelectorAll('input[name="gender"]');
+        const nameInput = document.getElementById('legal-name');
+        const codenameInput = document.getElementById('codename');
+        const draftBadge = document.getElementById('draft-badge');
+        const nameError = document.getElementById('name-error');
 
-    // --- 修改点 1：直接获取 Fractal 的 Checkbox ---
-    const deptFractal = document.getElementById('dept-fractal');
+        const ageSelect = document.getElementById('age');
+        const monthSelect = document.getElementById('month');
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
 
-    const btnSubmitIdentity = document.getElementById('btn-submit-identity');
-    const clearanceCheckbox = document.getElementById('clearance');
+        const deptFractal = document.getElementById('dept-fractal');
 
-    function validateIdentityForm() {
+        const btnSubmitIdentity = document.getElementById('btn-submit-identity');
+        const clearanceCheckbox = document.getElementById('clearance');
+
         if (!btnSubmitIdentity || !nameInput) return;
 
-        const nameVal = nameInput.value.trim();
-        const codenameVal = codenameInput.value.trim();
-        const isNameValid = nameVal.length >= 1 && nameVal.length <= 24;
-        const isAgeSelected = ageSelect.value !== "";
-        const isMonthSelected = monthSelect.value !== "";
-        const isGenderSelected = document.querySelector('input[name="gender"]:checked') !== null;
+        function validateIdentityForm() {
+            const nameVal = nameInput.value.trim();
+            const codenameVal = codenameInput.value.trim();
+            const isNameValid = nameVal.length >= 1 && nameVal.length <= 24;
+            const isAgeSelected = ageSelect.value !== "";
+            const isMonthSelected = monthSelect.value !== "";
+            const isGenderSelected = document.querySelector('input[name="gender"]:checked') !== null;
 
-        // --- 修改点 2：直接判断 Checkbox 的 checked 状态 ---
-        const isDepartmentSelected = deptFractal ? deptFractal.checked : false;
-        const isClearanceSelected = clearanceCheckbox ? clearanceCheckbox.checked : false;
+            const isDepartmentSelected = deptFractal ? deptFractal.checked : false;
+            const isClearanceSelected = clearanceCheckbox ? clearanceCheckbox.checked : false;
 
-        const toggleFilledState = (el, hasValue) => {
-            const group = el.closest('.group');
-            const label = group ? group.querySelector('label') : null;
-            const icon = group ? group.querySelector('svg') : null;
-            const defaultTextClass = el.tagName === 'SELECT' ? 'text-gray-400' : 'text-gray-800';
+            const toggleFilledState = (el, hasValue) => {
+                const group = el.closest('.group');
+                const label = group ? group.querySelector('label') : null;
+                const icon = group ? group.querySelector('svg') : null;
+                const defaultTextClass = el.tagName === 'SELECT' ? 'text-gray-400' : 'text-gray-800';
 
-            if (hasValue) {
-                el.classList.remove('text-gray-400', 'text-gray-800', 'border-gray-200');
-                el.classList.add('text-[#D00000]', 'border-[#D00000]');
-                if (label) {
-                    label.classList.remove('text-gray-400');
-                    label.classList.add('text-[#D00000]');
+                if (hasValue) {
+                    el.classList.remove('text-gray-400', 'text-gray-800', 'border-gray-200');
+                    el.classList.add('text-[#D00000]', 'border-[#D00000]');
+                    if (label) {
+                        label.classList.remove('text-gray-400');
+                        label.classList.add('text-[#D00000]');
+                    }
+                    if (icon && el.tagName === 'SELECT') {
+                        icon.classList.remove('text-gray-400');
+                        icon.classList.add('text-[#D00000]');
+                    }
+                } else {
+                    el.classList.remove('text-[#D00000]', 'border-[#D00000]');
+                    el.classList.add(defaultTextClass, 'border-gray-200');
+                    if (label) {
+                        label.classList.remove('text-[#D00000]');
+                        label.classList.add('text-gray-400');
+                    }
+                    if (icon && el.tagName === 'SELECT') {
+                        icon.classList.remove('text-[#D00000]');
+                        icon.classList.add('text-gray-400');
+                    }
                 }
-                if (icon && el.tagName === 'SELECT') {
-                    icon.classList.remove('text-gray-400');
-                    icon.classList.add('text-[#D00000]');
-                }
-            } else {
-                el.classList.remove('text-[#D00000]', 'border-[#D00000]');
-                el.classList.add(defaultTextClass, 'border-gray-200');
-                if (label) {
-                    label.classList.remove('text-[#D00000]');
-                    label.classList.add('text-gray-400');
-                }
-                if (icon && el.tagName === 'SELECT') {
-                    icon.classList.remove('text-[#D00000]');
-                    icon.classList.add('text-gray-400');
+            };
+
+            toggleFilledState(nameInput, nameVal.length > 0);
+            toggleFilledState(codenameInput, codenameVal.length > 0);
+            toggleFilledState(ageSelect, isAgeSelected);
+            toggleFilledState(monthSelect, isMonthSelected);
+
+            const genderLabel = document.getElementById('gender-label');
+            if (genderLabel) {
+                if (isGenderSelected) {
+                    genderLabel.classList.remove('text-gray-400');
+                    genderLabel.classList.add('text-[#D00000]');
+                } else {
+                    genderLabel.classList.remove('text-[#D00000]');
+                    genderLabel.classList.add('text-gray-400');
                 }
             }
-        };
 
-        toggleFilledState(nameInput, nameVal.length > 0);
-        toggleFilledState(codenameInput, codenameVal.length > 0);
-        toggleFilledState(ageSelect, isAgeSelected);
-        toggleFilledState(monthSelect, isMonthSelected);
-
-        const genderLabel = document.getElementById('gender-label');
-        if (genderLabel) {
-            if (isGenderSelected) {
-                genderLabel.classList.remove('text-gray-400');
-                genderLabel.classList.add('text-[#D00000]');
-            } else {
-                genderLabel.classList.remove('text-[#D00000]');
-                genderLabel.classList.add('text-gray-400');
+            const deptLabel = document.getElementById('department-label');
+            if (deptLabel) {
+                if (isDepartmentSelected) {
+                    deptLabel.classList.remove('text-gray-400');
+                    deptLabel.classList.add('text-[#D00000]');
+                } else {
+                    deptLabel.classList.remove('text-[#D00000]');
+                    deptLabel.classList.add('text-gray-400');
+                }
             }
-        }
 
-        // --- 部门 Label 变红逻辑 ---
-        const deptLabel = document.getElementById('department-label');
-        if (deptLabel) {
-            if (isDepartmentSelected) {
-                deptLabel.classList.remove('text-gray-400');
-                deptLabel.classList.add('text-[#D00000]');
-            } else {
-                deptLabel.classList.remove('text-[#D00000]');
-                deptLabel.classList.add('text-gray-400');
+            const clearanceLabel = document.getElementById('clearance-label');
+            if (clearanceLabel) {
+                if (isClearanceSelected) {
+                    clearanceLabel.classList.remove('text-gray-400');
+                    clearanceLabel.classList.add('text-[#D00000]');
+                } else {
+                    clearanceLabel.classList.remove('text-[#D00000]');
+                    clearanceLabel.classList.add('text-gray-400');
+                }
             }
-        }
 
-        const clearanceLabel = document.getElementById('clearance-label');
-        if (clearanceLabel) {
-            if (isClearanceSelected) {
-                clearanceLabel.classList.remove('text-gray-400');
-                clearanceLabel.classList.add('text-[#D00000]');
+            if (nameVal.length > 0) {
+                draftBadge.classList.remove('opacity-0');
             } else {
-                clearanceLabel.classList.remove('text-[#D00000]');
-                clearanceLabel.classList.add('text-gray-400');
+                draftBadge.classList.add('opacity-0');
             }
-        }
 
-        if (nameVal.length > 0) {
-            draftBadge.classList.remove('opacity-0');
-        } else {
-            draftBadge.classList.add('opacity-0');
-        }
+            if (nameInput.value.length > 0 && !isNameValid) {
+                nameError.classList.remove('hidden');
+            } else {
+                nameError.classList.add('hidden');
+            }
 
-        if (nameInput.value.length > 0 && !isNameValid) {
-            nameError.classList.remove('hidden');
-        } else {
-            nameError.classList.add('hidden');
-        }
+            // 计算表单完成进度
+            let completedSteps = 0;
+            if (isNameValid) completedSteps++;
+            if (isAgeSelected) completedSteps++;
+            if (isMonthSelected) completedSteps++;
+            if (isGenderSelected) completedSteps++;
+            if (isDepartmentSelected) completedSteps++;
+            if (isClearanceSelected) completedSteps++;
 
-// --- 新增：计算表单完成进度 ---
-        let completedSteps = 0;
-        if (isNameValid) completedSteps++;
-        if (isAgeSelected) completedSteps++;
-        if (isMonthSelected) completedSteps++;
-        if (isGenderSelected) completedSteps++;
-        if (isDepartmentSelected) completedSteps++;
-        if (isClearanceSelected) completedSteps++;
+            const totalSteps = 6;
+            const progressPercent = (completedSteps / totalSteps) * 100;
+            const isFormComplete = completedSteps === totalSteps;
 
-        const totalSteps = 6;
-        const progressPercent = (completedSteps / totalSteps) * 100;
-        const isFormComplete = completedSteps === totalSteps;
+            // 动画更新顶部进度条
+            const topProgressBar = document.getElementById('handshake-progress-bar');
+            if (topProgressBar) {
+                gsap.to(topProgressBar, { width: `${progressPercent}%`, duration: 0.3, ease: "power2.out" });
+            }
 
-        // 动画更新顶部进度条
-        const topProgressBar = document.getElementById('handshake-progress-bar');
-        if (topProgressBar) {
-            gsap.to(topProgressBar, { width: `${progressPercent}%`, duration: 0.3, ease: "power2.out" });
-        }
+            // 更新右上角状态文字
+            const statusText = document.getElementById('handshake-status');
+            if (statusText) {
+                if (isFormComplete) {
+                    statusText.textContent = "已验证";
+                    statusText.classList.replace('text-gray-400', 'text-[#D00000]');
+                    statusText.classList.add('font-black');
+                } else {
+                    statusText.textContent = `已完成 ${Math.round(progressPercent)}%`;
+                    statusText.classList.replace('text-[#D00000]', 'text-gray-400');
+                    statusText.classList.remove('font-black');
+                }
+            }
 
-        // 更新右上角状态文字
-        const statusText = document.getElementById('handshake-status');
-        if (statusText) {
+            // 获取 Deployment Node 容器
+            const deploymentSection = document.getElementById('deployment-section');
+
+            // 终极解锁判定
             if (isFormComplete) {
-                statusText.textContent = "VERIFIED";
-                statusText.classList.replace('text-gray-400', 'text-[#D00000]');
-                statusText.classList.add('font-black');
+                btnSubmitIdentity.disabled = false;
+                btnSubmitIdentity.className = "px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 cursor-pointer";
+
+                if (deploymentSection) deploymentSection.classList.add('is-ready');
             } else {
-                statusText.textContent = `${Math.round(progressPercent)}% FILLED`;
-                statusText.classList.replace('text-[#D00000]', 'text-gray-400');
-                statusText.classList.remove('font-black');
+                btnSubmitIdentity.disabled = true;
+                btnSubmitIdentity.className = "px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed";
+
+                if (deploymentSection) deploymentSection.classList.remove('is-ready');
             }
         }
 
-        // 获取刚刚增加的 Deployment Node 容器
-        const deploymentSection = document.getElementById('deployment-section');
-
-        // 终极解锁判定（包含 6 个必填项）
-        if (isFormComplete) {
-            btnSubmitIdentity.disabled = false;
-            btnSubmitIdentity.className = "px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 cursor-pointer";
-
-            // --- 激活！赋予 is-ready 类名，全员变红 ---
-            if (deploymentSection) deploymentSection.classList.add('is-ready');
-        } else {
-            btnSubmitIdentity.disabled = true;
-            btnSubmitIdentity.className = "px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed";
-
-            // --- 未集齐！剥夺 is-ready 类名，恢复冷灰色 ---
-            if (deploymentSection) deploymentSection.classList.remove('is-ready');
-        }
-    } // <- validateIdentityForm 函数结束
-
-
-
-    if (btnSubmitIdentity) {
         nameInput?.addEventListener('input', validateIdentityForm);
         codenameInput?.addEventListener('input', validateIdentityForm);
         ageSelect?.addEventListener('change', validateIdentityForm);
         monthSelect?.addEventListener('change', validateIdentityForm);
         genderRadios.forEach(radio => radio.addEventListener('change', validateIdentityForm));
-
-        // --- 修改点 3：只监听这个 Checkbox ---
         deptFractal?.addEventListener('change', validateIdentityForm);
-
         clearanceCheckbox?.addEventListener('change', validateIdentityForm);
 
         btnSubmitIdentity.addEventListener('click', () => {
@@ -1025,14 +1015,13 @@ import guideImage from '../assets/character1.png';
                 age: parseInt(ageSelect.value),
                 birth_month: parseInt(monthSelect.value),
                 gender: document.querySelector('input[name="gender"]:checked').value,
-                // Checkbox 的 value 读取
                 department: deptFractal.value,
                 rank: "intern",
                 rank_locked: true
             };
 
-            console.log("SUBJECT REGISTERED:", formData);
+            console.log("受试者已注册:", formData);
         });
-    }
+    });
 
 </script>

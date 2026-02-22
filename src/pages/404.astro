@@ -1,0 +1,43 @@
+﻿---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import "../styles/global.css";
+---
+
+<Layout>
+    <div id="page-404" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#D00000] text-white">
+        <div class="flex flex-col items-center select-none text-center">
+            <Icon class="w-32 h-32 mb-6 opacity-90" name="logo"></Icon>
+            <h1 class="text-[12rem] leading-none font-black tracking-widest drop-shadow-xl">404</h1>
+            <div class="h-2 w-full bg-white my-4 opacity-50"></div>
+            <h2 class="text-4xl font-bold tracking-widest uppercase mb-4 shadow-black drop-shadow-md">Connection Severed</h2>
+            <p class="text-xl font-mono text-red-100 max-w-xl opacity-80 mt-4 leading-relaxed">
+                >> ERR_HOST_UNREACHABLE<br/>
+                >> The terminal session has been terminated by the operator.<br/>
+                >> No signal detected from FS-001.
+            </p>
+
+            <a href={import.meta.env.BASE_URL} class="mt-12 px-8 py-3 border-2 border-white text-white font-bold tracking-widest uppercase hover:bg-white hover:text-[#D00000] transition-colors">
+                [ REBOOT TERMINAL ]
+            </a>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    import { gsap } from "gsap";
+
+    document.addEventListener('astro:page-load', () => {
+        const page404 = document.getElementById('page-404');
+        if (!page404) return;
+
+        // 还原之前在 index 里的屏幕闪烁 (Glitch) 故障入场特效
+        const tl = gsap.timeline();
+        tl.set(page404, { opacity: 0 })
+            .to(page404, { opacity: 1, duration: 0.05 })
+            .to(page404, { opacity: 0, duration: 0.05 })
+            .to(page404, { opacity: 1, duration: 0.1 })
+            .to(page404, { opacity: 0.8, duration: 0.05 })
+            .to(page404, { opacity: 1, duration: 0.2 });
+    });
+</script>
