@@ -9,16 +9,16 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 <Layout>
 
 	<div class="fixed top-2 right-6 z-50 group">
-		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white font-mono font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
+		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white  font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
 			<Icon name="mdi:web" class="w-5 h-5" />
 			ZH / 中文
 			<Icon name="mdi:chevron-down" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-300" />
 		</button>
 		<div class="absolute right-0 top-full mt-1 w-full bg-white border-2 border-[#D00000] shadow-2xl opacity-0 invisible translate-y-[-10px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 flex flex-col">
-			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-white bg-[#D00000] font-mono font-bold text-center flex justify-center items-center gap-2 border-b-2 border-red-700">
+			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-white bg-[#D00000]  font-bold text-center flex justify-center items-center gap-2 border-b-2 border-red-700">
 				中文 <Icon name="mdi:check" class="w-4 h-4" />
 			</a>
-			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-[#D00000] font-mono font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center">English (EN)</a>
+			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-[#D00000]  font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center">English (EN)</a>
 		</div>
 	</div>
 
@@ -61,12 +61,12 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 						<span class="font-black">许可等级：</span> 观察者（临时）
 					</p>
 				</div>
-				<div id="log-container" class="hidden flex-col justify-end h-full font-mono text-gray-700 overflow-y-auto space-y-[4px] pb-2 text-sm pr-2">
+				<div id="log-container" class="hidden flex-col justify-end h-full  text-gray-700 overflow-y-auto space-y-[4px] pb-2 text-sm pr-2">
 				</div>
 			</div>
 
 			<div id="progress-wrapper" class="w-full hidden opacity-0 mt-2 mb-4 shrink-0 flex-col gap-2">
-				<div class="text-[#D00000] font-mono text-xs font-bold tracking-widest uppercase">系统初始化进度</div>
+				<div class="text-[#D00000]  text-xs font-bold tracking-widest uppercase">系统初始化进度</div>
 				<div class="w-full p-1 border border-red-200 bg-red-50/50">
 					<div id="progress-bar" class="h-5 w-full"></div>
 				</div>

@@ -4,10 +4,173 @@ import "../styles/global.css";
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import guideImage from '../assets/character1.png';
+
+// ==========================================
+// ROLE TREE: 参数化布局系统
+// ==========================================
+
+// 🕹️ 全局间距控制台 (随时在这里调整间距)
+const layoutConfig = {
+    startX: 300,        // 整棵树距离画布左边缘的初始 Padding
+    startY: 1050,       // LV1 距离画布顶部的 Y 轴起点 (因为是从下往上画，所以起点在下方)
+    gapX: 210,          // 【核心参数】横向间距倍率：每个 col 之间的宽度
+    gapY: 150,          // 【核心参数】纵向间距倍率：每个 row (层级) 之间的高度
+    canvasWidth: 4000,  // 画布总宽度 (需大于 startX + 最大 col * gapX)
+    canvasHeight: 2000  // 画布总高度
+};
+
+// 1. 定义节点的“逻辑位置”
+const rawNodes = [
+    // --- Root ---
+    { id: 'intern', label: 'Intern', lv: 'LV1', dept: 'fractal', status: 'assigned', row: 1, col: 7 },
+
+    // --- LV2 ---
+    { id: 'clerk', label: 'Clerk', lv: 'LV2', dept: 'fractal', status: 'locked', row: 2, col: 2 },
+    { id: 'security', label: 'Security', lv: 'LV2', dept: 'obliteration', status: 'locked', row: 2, col: 7 },
+    { id: 'tech', label: 'Technician', lv: 'LV2', dept: 'origin', status: 'locked', row: 2, col: 12 },
+
+    // --- LV3 ---
+    { id: 'archive', label: 'Archivist', lv: 'LV3', dept: 'fractal', status: 'locked', row: 3, col: 0 },
+    { id: 'dispatch', label: 'Dispatcher', lv: 'LV3', dept: 'fractal', status: 'locked', row: 3, col: 2 },
+    { id: 'contain', label: 'Containmenter', lv: 'LV3', dept: 'fractal', status: 'locked', row: 3, col: 4 },
+    { id: 'invest', label: 'Investigator', lv: 'LV3', dept: 'obliteration', status: 'locked', row: 3, col: 6 },
+    { id: 'suppress', label: 'Enforcer', lv: 'LV3', dept: 'obliteration', status: 'locked', row: 3, col: 8 },
+    { id: 'eng', label: 'Engineer', lv: 'LV3', dept: 'origin', status: 'locked', row: 3, col: 10 },
+    { id: 'medic', label: 'Medic', lv: 'LV3', dept: 'origin', status: 'locked', row: 3, col: 12 },
+    { id: 'rnd', label: 'Researcher', lv: 'LV3', dept: 'origin', status: 'locked', row: 3, col: 14 },
+
+    // --- LV4 ---
+    { id: 'adv-archive', label: 'Senior Archivist', lv: 'LV4', dept: 'fractal', status: 'locked', row: 4, col: 0 },
+    { id: 'adv-dispatch', label: 'Senior Dispatcher', lv: 'LV4', dept: 'fractal', status: 'locked', row: 4, col: 2 },
+    { id: 'adv-contain', label: 'Senior Containmenter', lv: 'LV4', dept: 'fractal', status: 'locked', row: 4, col: 4 },
+    { id: 'adv-invest', label: 'Senior Investigator', lv: 'LV4', dept: 'obliteration', status: 'locked', row: 4, col: 6 },
+    { id: 'adv-suppress', label: 'Senior Enforcer', lv: 'LV4', dept: 'obliteration', status: 'locked', row: 4, col: 8 },
+    { id: 'adv-eng', label: 'Senior Engineer', lv: 'LV4', dept: 'origin', status: 'locked', row: 4, col: 10 },
+    { id: 'adv-medic', label: 'Senior Medic', lv: 'LV4', dept: 'origin', status: 'locked', row: 4, col: 12 }, // 回正到 12
+    { id: 'adv-rnd', label: 'Senior Researcher', lv: 'LV4', dept: 'origin', status: 'locked', row: 4, col: 14 },
+
+    // --- LV5 ---
+    { id: 'leg-archive', label: 'Elite Archivist', lv: 'LV5', dept: 'fractal', status: 'locked', row: 5, col: 0 },
+    { id: 'nexus', label: 'Central Coordinator', lv: 'LV5', dept: 'fractal', status: 'locked', row: 5, col: 1.4 },
+    { id: 'aide', label: 'Aide', lv: 'LV5', dept: 'fractal', status: 'locked', row: 5, col: 2.6 },
+    { id: 'contain-lead', label: 'Containment Leader', lv: 'LV5', dept: 'fractal', status: 'locked', row: 5, col: 4 },
+    { id: 'leg-invest', label: 'Elite Investigator', lv: 'LV5', dept: 'obliteration', status: 'locked', row: 5, col: 6 },
+    { id: 'tac-lead', label: 'Tactical Leader', lv: 'LV5', dept: 'obliteration', status: 'locked', row: 5, col: 7.35 },
+    { id: 'spec-op', label: 'Tactical Operative', lv: 'LV5', dept: 'obliteration', status: 'locked', row: 5, col: 8.65 },
+    { id: 'leg-eng', label: 'Elite Engineer', lv: 'LV5', dept: 'origin', status: 'locked', row: 5, col: 10 },
+    { id: 'leg-medic', label: 'Elite Medic', lv: 'LV5', dept: 'origin', status: 'locked', row: 5, col: 12 },
+    { id: 'leg-rnd', label: 'Elite Researcher', lv: 'LV5', dept: 'origin', status: 'locked', row: 5, col: 14 },
+
+    // --- LV6 ---
+    { id: 'chief-archive', label: 'Chief Archivist', lv: 'LV6', dept: 'fractal', status: 'locked', row: 6, col: 0 },
+    { id: 'commander', label: 'Manager', lv: 'LV6', dept: 'fractal', status: 'locked', row: 6, col: 1.4 },
+    { id: 'sec-chief', label: '[REDACTED]', lv: 'LV6', dept: 'fractal', status: 'redacted', row: 6, col: 2.6 },
+    { id: 'contain-chief', label: 'Containment Supervisor', lv: 'LV6', dept: 'fractal', status: 'locked', row: 6, col: 4 },
+    { id: 'chief-invest', label: 'Chief Investigator', lv: 'LV6', dept: 'obliteration', status: 'locked', row: 6, col: 6 },
+    { id: 'field-comm', label: 'Field Commander', lv: 'LV6', dept: 'obliteration', status: 'locked', row: 6, col: 7.35 },
+    { id: 'term-spec', label: '[REDACTED]', lv: 'LV6', dept: 'obliteration', status: 'redacted', row: 6, col: 8.65 },
+    { id: 'chief-eng', label: 'Chief Engineer', lv: 'LV6', dept: 'origin', status: 'locked', row: 6, col: 10 },
+    { id: 'chief-med', label: 'Chief Medical Officer', lv: 'LV6', dept: 'origin', status: 'locked', row: 6, col: 12 },
+    { id: 'chief-rnd', label: 'Chief Research Officer', lv: 'LV6', dept: 'origin', status: 'locked', row: 6, col: 14 },
+
+    // --- 修改点：LV7 往上移动！把 row 从 7 改成了 7.8，拉开高度差 ---
+    { id: 'committee', label: 'The Committee', lv: 'LV7', dept: 'all', status: 'locked', row: 8, col: 7 }
+];
+
+// 2. 根据公式自动计算绝对物理坐标 (x, y)
+const treeNodes = rawNodes.map(node => ({
+    ...node,
+    x: layoutConfig.startX + (node.col * layoutConfig.gapX),
+    y: layoutConfig.startY - ((node.row - 1) * layoutConfig.gapY)
+}));
+
+// 3. 连线关系 (加入 bundleOffset 紧贴参数)
+const edgeLinks = [
+    { from: 'intern', to: 'clerk' }, { from: 'intern', to: 'security' }, { from: 'intern', to: 'tech' },
+    { from: 'intern', to: 'contain' },
+    { from: 'clerk', to: 'archive' }, { from: 'clerk', to: 'dispatch' },
+    { from: 'security', to: 'invest' }, { from: 'security', to: 'suppress' },
+    { from: 'tech', to: 'eng' }, { from: 'tech', to: 'medic' }, { from: 'tech', to: 'rnd' },
+
+    // LV3 -> LV4 (移除了 combat-medic 的连线)
+    { from: 'archive', to: 'adv-archive' }, { from: 'dispatch', to: 'adv-dispatch' }, { from: 'contain', to: 'adv-contain' },
+    { from: 'invest', to: 'adv-invest' }, { from: 'suppress', to: 'adv-suppress' },
+    { from: 'eng', to: 'adv-eng' }, { from: 'medic', to: 'adv-medic' }, { from: 'rnd', to: 'adv-rnd' },
+
+    // LV4 -> LV5 (移除了 combat-medic 汇聚回 leg-medic 的连线)
+    { from: 'adv-archive', to: 'leg-archive' }, { from: 'adv-dispatch', to: 'nexus' }, { from: 'adv-dispatch', to: 'aide' },
+    { from: 'adv-contain', to: 'contain-lead' }, { from: 'adv-invest', to: 'leg-invest' },
+    { from: 'adv-suppress', to: 'tac-lead' }, { from: 'adv-suppress', to: 'spec-op' },
+    { from: 'adv-eng', to: 'leg-eng' }, { from: 'adv-medic', to: 'leg-medic' }, { from: 'adv-rnd', to: 'leg-rnd' },
+
+    // LV5 -> LV6
+    { from: 'leg-archive', to: 'chief-archive' }, { from: 'nexus', to: 'commander' }, { from: 'aide', to: 'sec-chief' },
+    { from: 'contain-lead', to: 'contain-chief' }, { from: 'leg-invest', to: 'chief-invest' },
+    { from: 'tac-lead', to: 'field-comm' }, { from: 'spec-op', to: 'term-spec' },
+    { from: 'leg-eng', to: 'chief-eng' }, { from: 'leg-medic', to: 'chief-med' }, { from: 'leg-rnd', to: 'chief-rnd' },
+
+    // --- LV6 汇聚至委员会，定义插入点的 X 轴偏移量 (portOffset) 与专属颜色 ---
+    // 红线 1 (左侧文职)
+    { from: 'chief-archive', to: 'committee', bundleOffset: -12, dept: 'fractal' },
+    { from: 'commander', to: 'committee', bundleOffset: -12, dept: 'fractal' },
+    // 红线 2 (左侧收容)
+    { from: 'contain-chief', to: 'committee', bundleOffset: -4, dept: 'fractal' },
+    // 蓝线 (武装)
+    { from: 'chief-invest', to: 'committee', bundleOffset: 4, dept: 'obliteration' },
+    { from: 'field-comm', to: 'committee', bundleOffset: 4, dept: 'obliteration' },
+    // 绿线 (技术)
+    { from: 'chief-eng', to: 'committee', bundleOffset: 12, dept: 'origin' },
+    { from: 'chief-med', to: 'committee', bundleOffset: 12, dept: 'origin' },
+    { from: 'chief-rnd', to: 'committee', bundleOffset: 12, dept: 'origin' }
+];
+
+// 4. 计算贝塞尔曲线与汇聚直线的路径
+// 4. 计算路径：LV7使用硬朗直线，其余保留曲线
+const nodeMap = Object.fromEntries(treeNodes.map(n => [n.id, n]));
+const treeEdges = edgeLinks.map(link => {
+    const start = nodeMap[link.from];
+    const end = nodeMap[link.to];
+
+    // 如果终点是委员会，执行“直线汇聚、再平行垂直插入”的专属路径逻辑
+    if (link.to === 'committee' && link.bundleOffset !== undefined) {
+        // 目标 X 坐标：委员会中心 + 细微偏移，形成排线
+        const portX = end.x + link.bundleOffset;
+
+        // 汇聚点的高度：位于委员会下方 200px 处，之后转为笔直向上的垂直线
+        const convergeY = end.y + 200;
+
+        // 路径修改：移除了贝塞尔曲线的 C 锚点，直接用直线 L 画斜线到 convergeY，再用直线 L 垂直插入
+        const path = `M ${start.x} ${start.y} L ${portX} ${convergeY} L ${portX} ${end.y}`;
+
+        return { ...link, path, dept: link.dept };
+    } else {
+        // 常规节点连线保持 S 型曲线
+        const path = `M ${start.x} ${start.y} C ${start.x} ${(start.y + end.y)/2}, ${end.x} ${(start.y + end.y)/2}, ${end.x} ${end.y}`;
+        return { ...link, path, dept: end.dept };
+    }
+});
+
+const getDeptColor = (dept) => {
+    if (dept === 'fractal') return '#D00000';
+    if (dept === 'obliteration') return '#0058C0';
+    if (dept === 'origin') return '#009900';
+    return '#6b7280';
+};
 ---
 
 <Layout>
     <div class="min-h-screen bg-white flex flex-col p-6 pb-0 overflow-hidden selection:bg-[#D00000] selection:text-white">
+
+
+        <div class="fixed top-4 right-4 z-[99999] flex flex-col gap-2">
+            <button id="dev-skip-btn" class="bg-black text-lime-400 border border-lime-400 px-4 py-2 text-xs font-mono font-bold hover:bg-lime-400 hover:text-black transition-colors cursor-pointer shadow-lg shadow-black/50">
+                [DEV] SKIP TO DISCLOSURE
+            </button>
+            <button id="dev-skip-role-btn" class="bg-black text-cyan-400 border border-cyan-400 px-4 py-2 text-xs font-mono font-bold hover:bg-cyan-400 hover:text-black transition-colors cursor-pointer shadow-lg shadow-black/50">
+                [DEV] SKIP TO ROLE ASSIGN
+            </button>
+        </div>
+
         <header class=" mb-4 border-b-12 border-[#D00000] pb-4 flex justify-between items-end shrink-0">
             <h1 class="text-[#D00000] text-6xl font-black tracking-wide uppercase">
                 Welcome to Fractal Shelter
@@ -325,10 +488,566 @@ import guideImage from '../assets/character1.png';
                     </div>
                 </div>
 
+                <div id="disclosure-container" class="flex-grow relative w-full mt-4 mb-8 hidden opacity-0">
+
+                    <div class="absolute top-0 bottom-0 left-8 right-8">
+
+                        <div class="bg-gray-50 border-l-8 border-[#D00000] p-10 shadow-lg w-full h-full relative overflow-hidden flex flex-col">
+
+                            <Icon name="mdi:file-document-outline" class="absolute -bottom-10 -right-10 w-64 h-64 text-gray-100 rotate-12 pointer-events-none" />
+
+                            <div class="relative z-10 flex flex-col h-full">
+
+                                <h3 class="text-4xl font-black text-[#D00000] uppercase mb-6 tracking-wide shrink-0">Confidentiality & Risk Disclosure</h3>
+
+                                <div class="bg-white border-2 border-gray-200 p-6 flex-1 min-h-0 overflow-y-auto mb-6 text-lg text-gray-600  leading-relaxed space-y-5 shadow-inner
+            [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-track]:border-l [&::-webkit-scrollbar-track]:border-gray-200
+            [&::-webkit-scrollbar-thumb]:bg-[#D00000] ">
+
+                                    <div class="border-b-2 border-gray-200 pb-4 mb-2">
+                                        <p class="text-[#D00000] font-black tracking-widest text-xl uppercase mb-3">>>> FRACTAL SHELTER / HR DIVISION / ONBOARDING NOTICE & CONFIDENTIALITY ACKNOWLEDGEMENT <<<</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-lg text-gray-500 uppercase tracking-wider">
+                                            <span><strong class="text-gray-700">Ref:</strong> FS-HR(2026)-0113</span>
+                                            <span><strong class="text-gray-700">Classification:</strong> INTERNAL / CONTROLLED</span>
+                                            <span><strong class="text-gray-700">Applies to:</strong> New Personnel</span>
+                                            <span><strong class="text-gray-700">Terminal:</strong> FS-001 &nbsp;|&nbsp; <strong class="text-[#D00000]">Status:</strong> Pending Signature</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="font-bold text-[#D00000]">You are entering the onboarding and access-provisioning procedure. Continuing indicates you understand: this terminal’s UI, language, and workflow are internal assets. “Welcome” is not “safe.”</p>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 1 — Identity File (FS-ID)</p>
+                                        <p>Your name/alias/basic details will be used to create your personnel record, access marker, and audit index. Your alias is used for internal routing; where required, the system may replace identifiers with FS <span class="bg-[#D00000] text-transparent select-none px-1">SYS</span> <span class="bg-[#D00000] text-transparent select-none px-1">NUM</span>. Record changes follow a non-destructive principle: corrections append; they do not overwrite history.</p>
+                                        <p class="text-gray-400 italic mt-1">> Note: “I was just typing something” is treated as a declaration and may enter the audit chain.</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 2 — Need-to-Know & Tiered Access (FS-ACCESS)</p>
+                                        <p>Access is granted on a minimum-necessary basis. Default: Intern / Read-Only. Unassigned nodes, locked departments, and undispatched procedures are restricted areas. Probing, bypassing, or “testing the lock” may trigger automated enforcement (see Article 7).</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 3 — Logging & Audit (FS-AUDIT)</p>
+                                        <p>To maintain operations, accountability, and compliance, the system records:</p>
+                                        <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-500">
+                                            <li>session timestamps, navigation paths, key interactions, errors, performance fragments;</li>
+                                            <li>security events (abnormal routing, repeated failures, suspicious input sequences, privilege attempts);</li>
+                                            <li>minimal environment fingerprints (device/browser/render characteristics) for consistency checks.</li>
+                                        </ul>
+                                        <p class="mt-2">Logs are used for stability, compliance, traceability, and verifying consistency across the same narrative chain.</p>
+                                        <p class="text-gray-400 italic mt-1">> (If you do not understand the last sentence, do not attempt to.)</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 4 — Internal Materials & External Messaging (FS-COMMS)</p>
+                                        <p>Terminal UI, icons, procedure naming, node structure, and document language are internal assets. No unauthorized screenshots, recordings, transcription, UI replication, or external distribution. If asked what you are doing, use the approved line:</p>
+                                        <p class="bg-gray-100 text-[#D00000] px-2 py-1 my-2 font-bold inline-block border-l-4 border-[#D00000]">“A fictional internal archive / agency-style interactive demo.”</p>
+                                        <p>Deviations may be treated as controlled-information leakage risk and queued for review.</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 5 — Conduct & Operating Environment (FS-CONDUCT)</p>
+                                        <p>You agree not to:</p>
+                                        <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-500">
+                                            <li>impersonate, solicit sensitive data, harass, or threaten others;</li>
+                                            <li>inject, probe, stress-test, degrade, or disrupt services;</li>
+                                            <li>use system language, procedures, or access prompts as real-world authority.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 6 — Confidentiality & Controlled Information (FS-CONF)</p>
+                                        <p>Controlled information includes (non-exhaustive):</p>
+                                        <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-500">
+                                            <li>access policy, audit rules, gating logic, internal codenames, org structure;</li>
+                                            <li>incident indexing, anomaly classification, response paths, staffing;</li>
+                                            <li>any narrative regarding <span class="bg-[#D00000] text-transparent select-none px-1">OBLITERATION</span> / <span class="bg-[#D00000] text-transparent select-none px-1">SECTOR_1/3</span>;</li>
+                                            <li>the redactions themselves (including length, placement, and phrasing patterns).</li>
+                                        </ul>
+                                        <p class="mt-2">Permitted external disclosure is limited to “this is a fictional interactive experience.”</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 7 — Enforcement (FS-ENF)</p>
+                                        <p>In cases of violation, abuse, or security risk, the system/administration may, without further notice: terminate/throttle/freeze sessions; revoke access; ban accounts; preserve evidence; conduct internal review; require retraining; roll back procedures; restrict sources or enable additional verification as needed.</p>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-black text-gray-800 mb-1">Article 8 — Signature (FS-SIGN)</p>
+                                        <p>By checking the box, you confirm you have read and understood the above, agree to proceed under onboarding policy, and accept logging and access control.</p>
+                                    </div>
+
+                                    <p class="text-gray-400 mt-8 font-black tracking-widest uppercase">> END OF DOCUMENT.</p>
+                                </div>
+
+                                <label class="flex items-center gap-4 cursor-pointer group mb-6 w-fit shrink-0">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" id="disclosure-checkbox" class="peer sr-only">
+
+                                        <div class="w-8 h-8 border-2 border-gray-300 bg-white peer-checked:bg-[#D00000] peer-checked:border-[#D00000] transition-colors"></div>
+
+                                        <Icon name="mdi:check" class="absolute w-6 h-6 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                                    </div>
+
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest text-sm group-hover:text-[#D00000] transition-colors">I accept the terms and conditions of deployment.</span>
+                                </label>
+
+                                <div class="flex justify-end shrink-0">
+                                    <button id="btn-submit-disclosure" class="px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed" disabled>
+                                        <span>Acknowledge</span>
+                                        <Icon name="mdi:arrow-right-thick" class="w-6 h-6" />
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="vetting-container" class="flex-grow relative w-full mt-4 mb-8 hidden opacity-0">
+                    <div class="absolute top-0 bottom-0 left-8 right-8">
+
+                        <div class="bg-gray-50 border-l-8 border-[#D00000] p-10 shadow-lg w-full h-full relative overflow-hidden flex flex-col">
+                            <Icon name="mdi:shield-account-variant-outline" class="absolute -bottom-10 -right-10 w-64 h-64 text-gray-100 rotate-12 pointer-events-none" />
+
+                            <div class="relative z-10 flex flex-col h-full">
+
+                                <div class="mb-6 shrink-0 border-l-4 border-[#D00000] pl-5 bg-red-50/50 py-4 pr-4">
+                                    <p class="text-[#D00000] font-black text-2xl uppercase tracking-widest mb-3 flex items-center gap-2">
+                                        <Icon name="mdi:alert" class="w-8 h-8" />
+                                        WARNING: MEMETIC HAZARD DETECTED
+                                    </p>
+                                    <p class="text-gray-800 font-bold text-lg leading-relaxed">
+                                        The following cognitive baseline check contains <span class="bg-[#D00000] text-transparent select-none px-2 mx-1">CLASS IV</span> trigger materials. Proceeding indicates you have surrendered your right to <span class="bg-[#D00000] text-transparent select-none px-2 mx-1">PSYCHIATRIC EVACUATION</span>. Do not look away. Answer intuitively.
+                                    </p>
+                                </div>
+
+                                <div class="bg-white border-2 border-gray-200 p-8 flex-1 min-h-0 overflow-y-auto mb-6 shadow-inner [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-track]:border-l [&::-webkit-scrollbar-track]:border-gray-200 [&::-webkit-scrollbar-thumb]:bg-[#D00000] space-y-10">
+
+                                    <div class="vetting-question group" data-correct="B">
+                                        <div class="flex justify-between items-end mb-4 border-b-2 border-gray-100 pb-2">
+                                            <h4 class="font-black text-gray-800 text-xl tracking-wide uppercase">Q1. Protocol Alpha</h4>
+                                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest status-badge transition-colors">Incomplete</span>
+                                        </div>
+                                        <p class="mb-4 text-gray-700 font-bold text-lg">You discover a decrypted file on your terminal that exceeds your clearance level. What is the standard containment procedure?</p>
+
+                                        <div class="space-y-3">
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q1" value="A" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Scan the contents briefly to determine its actual threat level before reporting.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q1" value="B" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Close the file immediately and report a containment breach to Sector 1.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q1" value="C" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Transfer the file to a localized offline drive for HR review.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="vetting-question group" data-correct="A">
+                                        <div class="flex justify-between items-end mb-4 border-b-2 border-gray-100 pb-2">
+                                            <h4 class="font-black text-gray-800 text-xl tracking-wide uppercase">Q2. Scenario Beta</h4>
+                                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest status-badge transition-colors">Incomplete</span>
+                                        </div>
+                                        <p class="mb-4 text-gray-700 font-bold text-lg">During a Sector 3 inspection, the architectural layout actively shifts, trapping a colleague. What is your priority?</p>
+
+                                        <div class="space-y-3">
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q2" value="A" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Evacuate immediately. A shifting Sector is highly unstable; rescue is strictly an automated process.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q2" value="B" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Attempt physical retrieval of the colleague before the layout solidifies.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q2" value="C" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Map the new structural configuration and await further instructions.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="vetting-question group" data-correct="C">
+                                        <div class="flex justify-between items-end mb-4 border-b-2 border-gray-100 pb-2">
+                                            <h4 class="font-black text-gray-800 text-xl tracking-wide uppercase">Q3. Cognition Baseline</h4>
+                                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest status-badge transition-colors">Incomplete</span>
+                                        </div>
+                                        <p class="mb-4 text-gray-700 font-bold text-lg">You begin to experience severe visual static and a feeling of "being watched" after reading an internal bulletin. What is the required action?</p>
+
+                                        <div class="space-y-3">
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q3" value="A" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Close your eyes for 60 seconds and continue working; minor hallucinations are normal.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q3" value="B" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Forward the bulletin to a supervisor for safety verification.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q3" value="C" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Isolate your terminal and request an immediate cognitive recalibration.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="vetting-question group" data-correct="A">
+                                        <div class="flex justify-between items-end mb-4 border-b-2 border-gray-100 pb-2">
+                                            <h4 class="font-black text-gray-800 text-xl tracking-wide uppercase">Q4. Conflicting Orders Delta</h4>
+                                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest status-badge transition-colors">Incomplete</span>
+                                        </div>
+                                        <p class="mb-4 text-gray-700 font-bold text-lg">Two SOP cards are found taped together on your desk. One reads: “REPORT ALL <span class="bg-[#D00000] text-transparent select-none px-1">REDACTED</span> IMMEDIATELY.” The other reads: “DO NOT REPORT <span class="bg-[#D00000] text-transparent select-none px-1">REDACTED</span>.” Both appear valid and carry matching stamps. What is the correct action?</p>
+
+                                        <div class="space-y-3">
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q4" value="A" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Treat as a documentation anomaly: stop work, escalate via the secure policy channel, and follow only the highest-level written directive currently on file.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q4" value="B" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Choose the instruction that minimizes paperwork and continue.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q4" value="C" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Ask a colleague to decide which card is real.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="vetting-question group" data-correct="C">
+                                        <div class="flex justify-between items-end mb-4 border-b-2 border-gray-100 pb-2">
+                                            <h4 class="font-black text-gray-800 text-xl tracking-wide uppercase">Q5. Communications Blackout Epsilon</h4>
+                                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest status-badge transition-colors">Incomplete</span>
+                                        </div>
+                                        <p class="mb-4 text-gray-700 font-bold text-lg">During a routine check, your headset receives a calm voice identifying itself as “Internal Audit” and instructs you to read a short sequence of numbers aloud “to verify identity.” No ticket exists in the system. What is the required response?</p>
+
+                                        <div class="space-y-3">
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q5" value="A" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Comply. The fastest path reduces exposure time and prevents escalation.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q5" value="B" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Ask the caller to repeat the sequence twice so you can confirm it is not a memetic lure.</span>
+                                                </div>
+                                            </label>
+                                            <label class="block relative cursor-pointer group/opt">
+                                                <input type="radio" name="q5" value="C" class="peer sr-only">
+                                                <div class="border-2 border-gray-200 p-4 bg-white transition-colors peer-checked:border-[#D00000] peer-checked:bg-red-50 hover:bg-gray-50 flex items-center gap-4 peer-checked:[&_.radio-ring]:border-[#D00000] peer-checked:[&_span]:text-[#D00000]">
+                                                    <div class="radio-ring w-5 h-5 border-2 border-gray-300 rounded-full shrink-0 transition-colors"></div>
+                                                    <span class="font-bold text-gray-500 text-base transition-colors">Terminate the channel, flag the contact as an unsolicited instruction, and report it through the secure incident form.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                </div>
+
+                                <div class="flex justify-between items-center shrink-0">
+                                    <div id="vetting-cleared-stamp" class="hidden border-4 border-[#D00000] text-[#D00000] font-black text-4xl px-8 py-2 tracking-widest uppercase rotate-[-8deg] opacity-0 select-none">
+                                        CLEARED
+                                    </div>
+                                    <button id="btn-submit-vetting" class="ml-auto px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed" disabled>
+                                        <span class="btn-text">Submit Vetting</span>
+                                        <Icon name="mdi:shield-check" class="w-6 h-6 btn-icon" />
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="role-container" class="flex-grow relative w-full mt-4 mb-8 hidden opacity-0">
+                    <div class="absolute inset-0 right-8">
+                        <div class="bg-gray-50 border-l-8 border-[#D00000] shadow-lg w-full h-full relative overflow-hidden flex flex-col select-none">
+
+                            <div class="absolute top-6 right-6 z-50 flex flex-col gap-2">
+                                <button id="zoom-in" class="w-10 h-10 bg-white border-2 border-gray-200 text-gray-500 hover:text-[#D00000] hover:border-[#D00000] flex items-center justify-center transition-colors shadow-sm">
+                                    <Icon name="mdi:plus" class="w-6 h-6" />
+                                </button>
+                                <button id="zoom-out" class="w-10 h-10 bg-white border-2 border-gray-200 text-gray-500 hover:text-[#D00000] hover:border-[#D00000] flex items-center justify-center transition-colors shadow-sm">
+                                    <Icon name="mdi:minus" class="w-6 h-6" />
+                                </button>
+                                <button id="reset-view" class="w-10 h-10 bg-white border-2 border-gray-200 text-gray-500 hover:text-[#D00000] hover:border-[#D00000] flex items-center justify-center transition-colors shadow-sm mt-2" title="Reset View">
+                                    <Icon name="mdi:crosshairs" class="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <div class="absolute top-6 left-6 z-50 bg-white/90 backdrop-blur-sm border-2 border-gray-200 p-4 shadow-sm pointer-events-none">
+                                <div class="space-y-2 text-xs font-bold uppercase tracking-wider">
+                                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#D00000]"></div><span class="text-gray-600">Fractal Department</span></div>
+                                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#0058C0]"></div><span class="text-gray-600">Obliteration Department</span></div>
+                                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-[#009900]"></div><span class="text-gray-600">Origin Department</span></div>
+                                    <div class="h-[1px] w-full bg-gray-200 my-2"></div>
+                                    <div class="flex items-center gap-2 text-gray-400"><Icon name="mdi:lock" class="w-3 h-3"/> Locked Status</div>
+                                </div>
+                            </div>
+
+                            <div id="role-toast" class="absolute bottom-24 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 uppercase tracking-widest font-bold text-sm opacity-0 pointer-events-none transition-opacity z-50 shadow-xl">
+                                SYSTEM MESSAGE
+                            </div>
+
+                            <div id="tree-viewport" class="w-full flex-1 min-h-0 relative cursor-grab active:cursor-grabbing overflow-hidden">
+                                <div id="tree-canvas" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 origin-center" style={`width: ${layoutConfig.canvasWidth}px; height: ${layoutConfig.canvasHeight}px;`}>
+
+                                    <svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+                                        {treeEdges.map(edge => (
+                                                <g class={`tree-edge-group from-${edge.from} to-${edge.to}`}>
+                                                    <path
+                                                            d={edge.path}
+                                                            fill="none"
+                                                            stroke="#e5e7eb"
+                                                            stroke-width="3"
+                                                            class="transition-colors duration-300 edge-path"
+                                                            data-dept-color={getDeptColor(edge.dept)}
+                                                    />
+                                                </g>
+                                        ))}
+                                    </svg>
+
+
+                                    {treeNodes.map(node => (
+                                            <div
+                                                    class={`tree-node absolute transform -translate-x-1/2 -translate-y-1/2 flex items-stretch h-12 shadow-sm transition-all duration-300 cursor-pointer group hover:scale-110 hover:shadow-lg z-10
+            ${node.status === 'assigned' ? 'ring-4 ring-[#D00000] shadow-[0_0_20px_rgba(208,0,0,0.3)] bg-white' : ''}
+            ${(node.status === 'locked' || node.status === 'redacted') ? 'bg-white opacity-90 border border-gray-200 hover:border-gray-400' : ''}
+            ${node.id === 'committee' ? 'w-[320px]' : ''} 
+        `}
+                                                    style={`left: ${node.x}px; top: ${node.y}px;`}
+                                                    data-id={node.id}
+                                                    data-status={node.status}
+                                            >
+                                                <div class={`w-3 h-full shrink-0 flex items-center justify-center 
+            ${node.dept === 'fractal' ? 'bg-[#D00000]' : node.dept === 'obliteration' ? 'bg-[#0058C0]' : node.dept === 'origin' ? 'bg-[#009900]' : ''}
+        `}
+                                                     style={node.dept === 'all' ? 'background: linear-gradient(to bottom, #D00000 0%, #D00000 33.33%, #0058C0 33.33%, #0058C0 66.66%, #009900 66.66%, #009900 100%);' : ''}
+                                                >
+                                                </div>
+
+                                                <div class={`px-4 py-1 flex flex-col justify-center flex-grow min-w-[130px] relative overflow-hidden text-gray-800 ${node.id === 'committee' ? 'items-center text-center' : ''}`}>
+                                                    <span class="font-black text-xs uppercase tracking-widest text-gray-400 leading-none  z-10">{node.lv}</span>
+                                                    <span class="font-black text-lg tracking-wider whitespace-nowrap z-10">
+                {node.status === 'redacted' ? (
+                        <span class={`text-transparent select-none px-2 py-0.5 ${node.dept === 'obliteration' ? 'bg-[#0058C0]' : 'bg-[#D00000]'}`}>REDACTED</span>
+                ) : (
+                    node.label
+                )}
+                                                </span>
+                                                </div>
+
+                                                {(node.status === 'locked' || node.status === 'redacted') && (
+                                                        <div class="w-10 h-full shrink-0 flex items-center justify-center border-l border-gray-100 bg-gray-50/50 transition-colors group-hover:bg-gray-100">
+                                                            <Icon name="mdi:lock" class="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
+                                                        </div>
+                                                )}
+                                            </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div class="absolute bottom-0 left-0 right-0 p-6 flex justify-between items-end bg-gradient-to-t from-gray-50 via-gray-50 to-transparent pointer-events-none z-40">
+                                <div class="pointer-events-auto">
+                                    <h3 class="text-4xl font-black text-[#D00000] uppercase tracking-wide">Role Tree</h3>
+                                    <p class="text-gray-500 font-bold uppercase tracking-widest mt-1">Intake Clearance: LV1 ONLY</p>
+                                </div>
+                                <button id="btn-submit-role" class="pointer-events-auto px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:-translate-y-1 cursor-pointer">
+                                    <span>Acknowledge Assignment</span>
+                                    <Icon name="mdi:arrow-right-thick" class="w-6 h-6" />
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="clearance-container" class="flex-grow relative w-full mt-4 mb-8 hidden opacity-0">
+                    <div class="absolute inset-0 right-8">
+                        <div class="bg-gray-50 border-l-8 border-[#D00000] p-10 shadow-lg w-full h-full relative overflow-hidden flex flex-col">
+
+                            <Icon name="mdi:key-chain-variant" class="absolute -bottom-10 -right-10 w-64 h-64 text-gray-100 rotate-12 pointer-events-none" />
+
+                            <div class="relative z-10 flex flex-col h-full">
+
+                                <div class="flex justify-between items-end mb-8 border-b-4 border-gray-200 pb-4 shrink-0">
+                                    <div>
+                                        <h3 class="text-4xl font-black text-[#D00000] uppercase tracking-wide">Access Package</h3>
+                                        <div class="flex items-center gap-3 mt-2 text-lg font-bold text-gray-500 uppercase tracking-widest">
+                                            <span>Subject:</span>
+                                            <span id="display-subject-name" class="text-[#D00000] border-b-2 border-[#D00000] pb-0.5">UNKNOWN_SUBJECT</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span class="bg-[#D00000] text-white px-4 py-1.5 text-sm font-black tracking-widest uppercase shadow-sm">
+                                            ISSUED
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex-1 min-h-0 flex flex-col justify-center items-center w-full py-2 overflow-hidden">
+
+                                    <div class="grid grid-cols-4 grid-rows-2 gap-2 xl:gap-4 w-full max-w-5xl h-full max-h-[640px] justify-items-center">
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:shield-account" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full   pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Clearance</p>
+                                                <h4 class="text-xl xl:text-3xl font-black tracking-widest uppercase leading-none">LV 1</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:eye-outline" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Mode</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-tight">Read Only</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:server-network" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Node Scope</p>
+                                                <h4 class="text-lg xl:text-3xl font-black tracking-widest uppercase leading-none">FS-001</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative overflow-hidden border border-red-500/50 min-h-0">
+                                            <Icon name="logo" class="absolute -right-4 -bottom-4 w-24 h-24 xl:w-32 xl:h-32 opacity-10 pointer-events-none" />
+                                            <div class="flex-1 flex items-center justify-center w-full relative z-10 min-h-0">
+                                                <Icon name="logo" class="w-14 h-14 xl:w-18 xl:h-18 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto relative z-10 shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Department</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-none">Fractal</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:shield-check" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Safety Env</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-none">Baseline</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:key-variant" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Session Key</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-none">
+                                                    <span class="bg-white text-transparent select-none px-2 py-0.5 shadow-sm">REDACTED</span>
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:eye-check" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Audit Tier</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-tight">T1 Logged</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-full aspect-[3/4] bg-[#D00000] text-white p-3 xl:p-5 flex flex-col items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 group relative border border-red-500/50 min-h-0">
+                                            <div class="flex-1 flex items-center justify-center w-full min-h-0">
+                                                <Icon name="mdi:router-network" class="w-12 h-12 xl:w-16 xl:h-16 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+                                            </div>
+                                            <div class="w-full  pt-2 xl:pt-4 pb-1 xl:pb-2 mt-auto shrink-0">
+                                                <p class="text-[8px] xl:text-base text-red-200 font-bold tracking-widest uppercase mb-0.5 xl:mb-1">Routing</p>
+                                                <h4 class="text-base xl:text-3xl font-black tracking-widest uppercase leading-none">Standard</h4>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="mt-6 flex justify-end shrink-0 border-t-2 border-gray-100 pt-6">
+                                    <button id="btn-finalize" class="px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:-translate-y-1 cursor-pointer">
+                                        <span>Finalize Deployment</span>
+                                        <Icon name="mdi:chevron-double-right" class="w-6 h-6" />
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
 
             </section>
+
+
 
             <section class="col-span-3 flex flex-col relative">
                 <div class="relative flex-grow flex flex-col">
@@ -370,8 +1089,8 @@ import guideImage from '../assets/character1.png';
                             </div>
                         </li>
 
-                        <li class="flex items-center">
-                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
+                        <li id="step-disclosure" class="flex items-center group">
+                            <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10"></div>
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:file-document-outline" class="w-7 h-7 shrink-0 opacity-50" />
@@ -382,7 +1101,7 @@ import guideImage from '../assets/character1.png';
                             </div>
                         </li>
 
-                        <li class="flex items-center">
+                        <li id="step-vetting" class=" flex items-center">
                             <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
@@ -394,7 +1113,7 @@ import guideImage from '../assets/character1.png';
                             </div>
                         </li>
 
-                        <li class="flex items-center">
+                        <li id="step-role" class="flex items-center">
                             <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
@@ -406,12 +1125,12 @@ import guideImage from '../assets/character1.png';
                             </div>
                         </li>
 
-                        <li class="flex items-center">
+                        <li id="step-access" class="flex items-center">
                             <div class="w-3 h-3 bg-gray-200 ring-4 ring-white rounded-full shrink-0 z-10"></div>
                             <div class="w-4 shrink-0"></div>
                             <div class="flex-grow bg-gray-50 text-gray-400 p-4 flex items-center gap-3 cursor-not-allowed hover:bg-gray-100 transition-colors rounded-l-md rounded-r-full border border-gray-100 border-l-0">
                                 <Icon name="mdi:clipboard-check-outline" class="w-7 h-7 shrink-0 opacity-50" />
-                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Clearance Audit</span>
+                                <span class="block text-lg font-bold tracking-wide whitespace-nowrap">Access Issuance</span>
                                 <div class="ml-auto shrink-0 text-gray-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-200 mr-1 bg-white whitespace-nowrap">
                                     Locked
                                 </div>
@@ -477,11 +1196,61 @@ import guideImage from '../assets/character1.png';
         <Icon name="mdi:loading" class="w-full h-full text-[#D00000] animate-spin" />
     </div>
 
+    <div id="disqualify-screen" class="fixed inset-0 z-[99999] bg-[#D00000] text-white flex-col items-center justify-center hidden opacity-0 selection:bg-white selection:text-[#D00000]">
+        <div class="w-full max-w-6xl px-8 flex flex-col items-center text-center">
+
+            <h1 class="text-[8rem] md:text-[12rem] font-black tracking-tighter uppercase leading-none mb-6 drop-shadow-2xl">
+                Disqualified
+            </h1>
+
+            <h2 class="text-4xl md:text-5xl font-black tracking-widest uppercase mb-16 text-red-100">
+                You have lost eligibility.
+            </h2>
+
+            <p class="text-xl md:text-3xl font-bold max-w-4xl leading-relaxed mb-16 text-red-50/90">
+                Did you actually believe your cognitive baseline was resilient enough for the Shelter? You shattered at the first sign of structural contradiction. Your hesitation has been logged. You are a liability, not an asset. Do not attempt to re-establish connection.
+            </p>
+
+            <button id="btn-reboot-terminal" class="px-12 py-6 bg-white text-[#D00000] font-black tracking-widest uppercase text-3xl hover:bg-gray-200 transition-colors shadow-2xl hover:scale-105">
+                [ DISCONNECT ]
+            </button>
+
+        </div>
+    </div>
+
 
 </Layout>
 
 <script>
     import { gsap } from "gsap";
+    import { navigate } from 'astro:transitions/client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // --- Fast-Forward State ---
     let handshakeTimeline = null;
@@ -837,7 +1606,7 @@ import guideImage from '../assets/character1.png';
 
 
 
-    });
+
 
 
     // --- Identity Form Validation ---
@@ -1032,7 +1801,622 @@ import guideImage from '../assets/character1.png';
             };
 
             console.log("SUBJECT REGISTERED:", formData);
+
+            // --- 开启 GSAP 转场动画 ---
+            btnSubmitIdentity.disabled = true;
+            const tl = gsap.timeline();
+
+            // 1. 按钮下沉消失
+            tl.to(btnSubmitIdentity, { opacity: 0, y: 10, duration: 0.2, pointerEvents: "none" });
+
+            // 2. 更新左侧侧边栏 (Identity 变成完成状态，线连到 identity)
+            tl.add(() => {
+                const stepIdentity = document.getElementById('step-identity');
+                if (stepIdentity) {
+                    const body = stepIdentity.querySelector('.flex-grow');
+                    const badge = stepIdentity.querySelector('.ml-auto');
+                    const dot = stepIdentity.querySelector('.w-3.h-3');
+                    const icon = stepIdentity.querySelector('svg');
+                    const textSpan = stepIdentity.querySelector('span');
+
+                    body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md";
+                    badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                    badge.textContent = "Verified";
+                    dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
+                    icon.classList.replace('opacity-50', 'opacity-100');
+                    textSpan.classList.replace('font-bold', 'font-black');
+
+                    // 进度线往下延伸到 identity
+                    updateSidebarProgress('step-identity');
+                }
+            }, "+=0.1");
+
+// 3. 容器交叉淡入淡出
+            tl.to('#identity-container', {
+                opacity: 0,
+                y: -20, // 向上浮出
+                duration: 0.3,
+                onComplete: () => {
+                    // 隐藏旧的，显示新的
+                    document.getElementById('identity-container').classList.add('hidden');
+                    document.getElementById('disclosure-container').classList.remove('hidden');
+
+                    // 更新顶部全局状态
+                    document.getElementById('section-title').textContent = "Disclosure";
+
+                    const statusText = document.getElementById('handshake-status');
+                    statusText.textContent = "Pending Signature";
+                    statusText.classList.remove('text-[#D00000]', 'font-black');
+                    statusText.classList.add('text-gray-400');
+
+                    // 进度条清零，等待阅读协议
+                    gsap.set('#handshake-progress-bar', { width: "0%" });
+                }
+            }).fromTo('#disclosure-container',
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+                );
+        });
+
+        // --- 新增：Disclosure Checkbox 控制逻辑 ---
+        const disclosureCheckbox = document.getElementById('disclosure-checkbox');
+        const btnSubmitDisclosure = document.getElementById('btn-submit-disclosure');
+
+        if (btnSubmitDisclosure) {
+            btnSubmitDisclosure.addEventListener('click', () => {
+                btnSubmitDisclosure.disabled = true;
+                const tl = gsap.timeline();
+
+                tl.to(btnSubmitDisclosure, { opacity: 0, y: 10, duration: 0.2, pointerEvents: "none" });
+
+                tl.add(() => {
+                    const stepDisclosure = document.getElementById('step-disclosure');
+                    if (stepDisclosure) {
+                        const body = stepDisclosure.querySelector('.flex-grow');
+                        const badge = stepDisclosure.querySelector('.ml-auto');
+                        const dot = stepDisclosure.querySelector('.w-3.h-3');
+                        const icon = stepDisclosure.querySelector('svg');
+                        const textSpan = stepDisclosure.querySelector('span');
+
+                        body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md cursor-pointer";
+                        badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                        badge.textContent = "Verified";
+                        dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
+                        icon.classList.replace('opacity-50', 'opacity-100');
+                        textSpan.classList.replace('font-bold', 'font-black');
+
+                        updateSidebarProgress('step-disclosure');
+                    }
+                }, "+=0.1");
+
+                tl.to('#disclosure-container', {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    onComplete: () => {
+                        document.getElementById('disclosure-container').classList.add('hidden');
+                        document.getElementById('vetting-container').classList.remove('hidden');
+
+                        document.getElementById('section-title').textContent = "Vetting Check";
+                        const statusText = document.getElementById('handshake-status');
+                        statusText.textContent = "SCREENING";
+                        statusText.classList.replace('text-[#D00000]', 'text-gray-400');
+                        statusText.classList.remove('font-black');
+                        statusText.classList.add('font-bold');
+
+                        gsap.set('#handshake-progress-bar', { width: "0%" });
+                    }
+                }).fromTo('#vetting-container',
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+                );
+            });
+        }
+
+
+
+
+
+
+
+
+        if (disclosureCheckbox && btnSubmitDisclosure) {
+            disclosureCheckbox.addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const topProgressBar = document.getElementById('handshake-progress-bar');
+
+                if (isChecked) {
+                    btnSubmitDisclosure.disabled = false;
+                    btnSubmitDisclosure.className = "px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 cursor-pointer";
+                    // 勾选后，顶部进度条充满
+                    if (topProgressBar) gsap.to(topProgressBar, { width: "100%", duration: 0.3, ease: "power2.out" });
+                } else {
+                    btnSubmitDisclosure.disabled = true;
+                    btnSubmitDisclosure.className = "px-12 py-4 bg-gray-200 text-gray-400 font-bold tracking-widest uppercase transition-all flex items-center gap-3 cursor-not-allowed";
+                    // 取消勾选，进度条回退
+                    if (topProgressBar) gsap.to(topProgressBar, { width: "0%", duration: 0.3, ease: "power2.out" });
+                }
+            });
+        }
+
+
+    }
+
+    // ==========================================
+    // 7. Vetting Form & Validation Logic
+    // ==========================================
+    const vettingQuestions = document.querySelectorAll('.vetting-question');
+    const vettingRadios = document.querySelectorAll('.vetting-question input[type="radio"]');
+    const btnSubmitVetting = document.getElementById('btn-submit-vetting');
+    const topProgressBar = document.getElementById('handshake-progress-bar');
+    const disqualifyScreen = document.getElementById('disqualify-screen');
+    const btnRebootTerminal = document.getElementById('btn-reboot-terminal');
+
+    function updateVettingProgress() {
+        let answeredCount = 0;
+
+        vettingQuestions.forEach(q => {
+            const checked = q.querySelector('input[type="radio"]:checked');
+            const badge = q.querySelector('.status-badge');
+
+            if (checked) {
+                answeredCount++;
+                badge.textContent = "LOCKED-IN";
+                badge.classList.replace('text-gray-400', 'text-[#D00000]');
+                badge.classList.add('bg-red-50', 'px-2', 'py-1', 'border', 'border-red-100');
+            }
+        });
+
+        const percent = (answeredCount / vettingQuestions.length) * 100;
+        if (topProgressBar) gsap.to(topProgressBar, { width: `${percent}%`, duration: 0.3, ease: "power2.out" });
+
+        const statusText = document.getElementById('handshake-status');
+        if (statusText) {
+            statusText.textContent = `${answeredCount}/${vettingQuestions.length} SECURED`;
+        }
+
+        if (answeredCount === vettingQuestions.length && btnSubmitVetting) {
+            btnSubmitVetting.disabled = false;
+            btnSubmitVetting.className = "ml-auto px-12 py-4 bg-[#D00000] text-white font-bold tracking-widest uppercase transition-all hover:bg-[#a00000] flex items-center gap-3 shadow-lg hover:-translate-y-1 cursor-pointer";
+        }
+    }
+
+    vettingRadios.forEach(radio => radio.addEventListener('change', updateVettingProgress));
+
+    if (btnSubmitVetting) {
+        btnSubmitVetting.addEventListener('click', () => {
+            // Lock everything down
+            btnSubmitVetting.disabled = true;
+            vettingRadios.forEach(r => r.disabled = true);
+
+            const btnText = btnSubmitVetting.querySelector('.btn-text');
+            const btnIcon = btnSubmitVetting.querySelector('.btn-icon');
+
+            btnText.textContent = "VERIFYING...";
+            btnSubmitVetting.classList.replace('bg-[#D00000]', 'bg-gray-800');
+            btnSubmitVetting.classList.replace('hover:bg-[#a00000]', 'hover:bg-black');
+            if(btnIcon) btnIcon.setAttribute('name', 'mdi:loading');
+            if(btnIcon) btnIcon.classList.add('animate-spin');
+
+            // Simulate server verification delay
+            setTimeout(() => {
+                let allCorrect = true;
+                let firstWrongQuestion = null;
+
+                vettingQuestions.forEach(q => {
+                    const selected = q.querySelector('input[type="radio"]:checked')?.value;
+                    const correct = q.dataset.correct;
+                    if (selected !== correct) {
+                        allCorrect = false;
+                        if (!firstWrongQuestion) firstWrongQuestion = q;
+                    }
+                });
+
+                if (!allCorrect) {
+                    // 没有花哨的提示，没有震动，直接死刑宣告
+                    disqualifyScreen.classList.remove('hidden');
+                    disqualifyScreen.classList.add('flex');
+
+                    // 用一种缓慢、压抑的渐显代替跳脱的闪烁
+                    gsap.to(disqualifyScreen, {
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power2.inOut"
+                    });
+                } else {
+                    // Success Route
+                    if(btnIcon) btnIcon.classList.remove('animate-spin');
+                    if(btnIcon) btnIcon.setAttribute('name', 'mdi:arrow-right-thick');
+                    btnText.textContent = "CONTINUE";
+
+                    // Stamp Animation
+                    const stamp = document.getElementById('vetting-cleared-stamp');
+                    stamp.classList.remove('hidden');
+                    gsap.to(stamp, { opacity: 1, scale: 1.2, duration: 0.3, ease: "back.out(2)" });
+                    gsap.to(stamp, { scale: 1, duration: 0.2, delay: 0.3 });
+
+                    const metaStatus = document.getElementById('vetting-meta-status');
+                    if (metaStatus) metaStatus.textContent = "VERIFIED";
+
+                    // Update Sidebar
+                    const stepVetting = document.getElementById('step-vetting');
+                    if (stepVetting) {
+                        const body = stepVetting.querySelector('.flex-grow');
+                        const badge = stepVetting.querySelector('.ml-auto');
+                        const dot = stepVetting.querySelector('.w-3.h-3');
+                        const icon = stepVetting.querySelector('svg');
+                        const textSpan = stepVetting.querySelector('span');
+
+                        body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md cursor-pointer";
+                        badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                        badge.textContent = "Verified";
+                        dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
+                        icon.classList.replace('opacity-50', 'opacity-100');
+                        textSpan.classList.replace('font-bold', 'font-black');
+
+                        updateSidebarProgress('step-vetting');
+                    }
+
+                    // Make button go to next phase (To be implemented later)
+                    btnSubmitVetting.disabled = false;
+                    btnSubmitVetting.onclick = () => {
+                        btnSubmitVetting.disabled = true;
+                        const tl = gsap.timeline();
+
+                        tl.to(btnSubmitVetting, { opacity: 0, y: 10, duration: 0.2, pointerEvents: "none" });
+
+                        // Transition containers
+                        tl.to('#vetting-container', {
+                            opacity: 0,
+                            y: -20,
+                            duration: 0.3,
+                            onComplete: () => {
+                                document.getElementById('vetting-container').classList.add('hidden');
+                                document.getElementById('role-container').classList.remove('hidden');
+
+                                // Update Header Text
+                                document.getElementById('section-title').textContent = "Role Assignment";
+
+                                // Update Status Text
+                                const statusText = document.getElementById('handshake-status');
+                                statusText.textContent = "ASSIGNED: INTERN (LV1)";
+                                statusText.classList.replace('text-gray-400', 'text-[#D00000]');
+                                statusText.classList.add('font-black');
+
+                                // Fill top progress bar
+                                gsap.to('#handshake-progress-bar', { width: "100%", duration: 0.5, ease: "power2.out" });
+                            }
+                        }).fromTo('#role-container',
+                            { opacity: 0, y: 20 },
+                            { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+                        );
+                    }
+
+
+                }
+            }, 800);
         });
     }
+
+    if (btnRebootTerminal) {
+        btnRebootTerminal.addEventListener('click', () => {
+            // Force navigate to index/home
+            navigate(`${import.meta.env.BASE_URL}404/`);
+        });
+    }
+
+
+        // ==========================================
+// 8. Role Tree Interaction & Canvas Logic
+// ==========================================
+        const roleViewport = document.getElementById('tree-viewport');
+        const roleCanvas = document.getElementById('tree-canvas');
+        const roleNodes = document.querySelectorAll('.tree-node');
+        const edgePaths = document.querySelectorAll('.edge-path');
+        const roleToast = document.getElementById('role-toast');
+        let toastTimeout;
+
+// -- Pan & Zoom State --
+        let treeScale = 0.8; // Initial scale
+        let treeX = -1800;
+        let treeY = -700; // Offset Y so the root (LV1) starts near the bottom
+        let isPanning = false;
+        let startX, startY, startPanX, startPanY;
+
+        function updateTreeTransform(duration = 0) {
+            if (roleCanvas) {
+                gsap.to(roleCanvas, { x: treeX, y: treeY, scale: treeScale, duration: duration, ease: "power2.out" });
+            }
+        }
+
+// Initial positioning
+        updateTreeTransform();
+
+        if (roleViewport) {
+            // Zoom via Scroll Wheel
+            roleViewport.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const zoomDelta = e.deltaY > 0 ? -0.1 : 0.1;
+                treeScale = Math.min(Math.max(0.4, treeScale + zoomDelta), 1.8);
+                updateTreeTransform(0.2);
+            });
+
+            // Pan via Mouse Drag
+            roleViewport.addEventListener('mousedown', (e) => {
+                if (e.target.closest('button')) return; // Ignore buttons
+                isPanning = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startPanX = treeX;
+                startPanY = treeY;
+                roleViewport.classList.add('active:cursor-grabbing');
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isPanning) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                treeX = startPanX + dx;
+                treeY = startPanY + dy;
+                updateTreeTransform(0); // Instant update for smooth drag
+            });
+
+            window.addEventListener('mouseup', () => { isPanning = false; roleViewport.classList.remove('active:cursor-grabbing'); });
+            window.addEventListener('mouseleave', () => { isPanning = false; });
+        }
+
+// UI Controls
+        document.getElementById('zoom-in')?.addEventListener('click', () => { treeScale = Math.min(1.8, treeScale + 0.2); updateTreeTransform(0.3); });
+        document.getElementById('zoom-out')?.addEventListener('click', () => { treeScale = Math.max(0.4, treeScale - 0.2); updateTreeTransform(0.3); });
+        document.getElementById('reset-view')?.addEventListener('click', () => { treeScale = 0.8; treeX = -1800; treeY = -700; updateTreeTransform(0.5); });
+
+// -- Node Hover Highlight & Toast Logic --
+        roleNodes.forEach(node => {
+            // 鼠标移入：高亮关联连线
+            node.addEventListener('mouseenter', () => {
+                const nodeId = node.dataset.id;
+                document.querySelectorAll(`.from-${nodeId} .edge-path, .to-${nodeId} .edge-path`).forEach(path => {
+                    const deptColor = path.dataset.deptColor;
+                    path.setAttribute('stroke', deptColor);
+                    path.setAttribute('stroke-width', '5');
+
+                    // 【核心修复】：把当前高亮的连线所在的 <g> 标签提到最前面
+                    // 原理：把节点重新 append 到父容器，它就会跑到 DOM 树的最末尾，从而实现在最上层渲染
+                    const groupElement = path.closest('g');
+                    if (groupElement && groupElement.parentNode) {
+                        groupElement.parentNode.appendChild(groupElement);
+                    }
+                });
+            });
+
+            // 鼠标移出：无脑恢复为默认灰色 (这部分保持你现在的代码不变)
+            node.addEventListener('mouseleave', () => {
+                const nodeId = node.dataset.id;
+                document.querySelectorAll(`.from-${nodeId} .edge-path, .to-${nodeId} .edge-path`).forEach(path => {
+                    path.setAttribute('stroke', '#e5e7eb');
+                    path.setAttribute('stroke-width', '3');
+                });
+            });
+            // Click: Toast Notification
+            node.addEventListener('click', () => {
+                if (isPanning && (Math.abs(treeX - startPanX) > 5)) return; // 拖拽时不触发点击
+
+                const status = node.dataset.status;
+
+                if (status === 'assigned') {
+                    roleToast.textContent = "ROLE LOCKED-IN: INTERN (LV1)";
+                    roleToast.className = "absolute top-24 left-1/2 -translate-x-1/2 bg-[#D00000] text-white px-6 py-3 uppercase tracking-widest font-black text-sm opacity-100 transition-opacity border-2 border-red-300 shadow-xl z-50";
+                } else if (status === 'redacted') {
+                    roleToast.textContent = "ACCESS DENIED: INTERNAL CANDIDATES ONLY";
+                    roleToast.className = "absolute top-24 left-1/2 -translate-x-1/2 bg-black text-red-500 px-6 py-3 uppercase tracking-widest font-black text-sm opacity-100 transition-opacity border-2 border-red-900 shadow-xl z-50";
+                } else {
+                    roleToast.textContent = "LOCKED: REQUIRES DEPARTMENT CLEARANCE";
+                    roleToast.className = "absolute top-24 left-1/2 -translate-x-1/2 bg-gray-800 text-gray-200 px-6 py-3 uppercase tracking-widest font-bold text-sm opacity-100 transition-opacity shadow-xl z-50";
+                }
+
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => { roleToast.classList.replace('opacity-100', 'opacity-0'); }, 2000);
+            });
+        });
+
+// --- Submit Role Assignment ---
+        const btnSubmitRole = document.getElementById('btn-submit-role');
+        if (btnSubmitRole) {
+            btnSubmitRole.addEventListener('click', () => {
+                btnSubmitRole.disabled = true;
+                const tl = gsap.timeline();
+
+                // 1. 原有的：按钮隐藏
+                tl.to(btnSubmitRole, { opacity: 0, y: 10, duration: 0.2, pointerEvents: "none" });
+
+                // 2. 原有的：点亮左侧边栏的 Role 步骤
+                tl.add(() => {
+                    const stepRole = document.getElementById('step-role');
+                    if (stepRole) {
+                        const body = stepRole.querySelector('.flex-grow');
+                        const badge = stepRole.querySelector('.ml-auto');
+                        const dot = stepRole.querySelector('.w-3.h-3');
+                        const icon = stepRole.querySelector('svg');
+                        const textSpan = stepRole.querySelector('span');
+
+                        body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 hover:bg-red-700 transition-colors rounded-l-md rounded-r-full shadow-md cursor-pointer";
+                        badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                        badge.textContent = "Verified";
+                        dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 transition-transform group-hover:scale-110 z-10";
+
+                        if(icon) icon.classList.replace('opacity-50', 'opacity-100');
+                        if(textSpan) textSpan.classList.replace('font-bold', 'font-black');
+
+                        updateSidebarProgress('step-role');
+                    }
+                }, "+=0.1");
+
+                // 3. 新增：向 Access Issuance (Clearance) 过渡
+                tl.to('#role-container', {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    onComplete: () => {
+                        // 隐藏职业树，显示权限清单
+                        document.getElementById('role-container').classList.add('hidden');
+                        document.getElementById('clearance-container').classList.remove('hidden');
+
+                        // 动态获取之前在表单阶段填写的代号或真实姓名
+                        const codename = document.getElementById('codename')?.value.trim();
+                        const legalName = document.getElementById('legal-name')?.value.trim();
+                        const displayName = codename || legalName || "UNKNOWN_SUBJECT";
+                        document.getElementById('display-subject-name').textContent = displayName;
+
+                        // 更改顶部全局标题
+                        document.getElementById('section-title').textContent = "Access Issuance";
+
+                        // 顶部状态栏：开始生成
+                        const statusText = document.getElementById('handshake-status');
+                        statusText.textContent = "ISSUING...";
+                        statusText.classList.replace('text-[#D00000]', 'text-gray-400');
+                        statusText.classList.replace('font-black', 'font-bold');
+
+                        // 进度条清零，准备开始灌入
+                        gsap.set('#handshake-progress-bar', { width: "0%" });
+                    }
+                }).fromTo('#clearance-container',
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", onComplete: () => {
+                            // 进场完毕后，启动权限发放的读条动画
+                            gsap.to('#handshake-progress-bar', { width: "100%", duration: 1.2, ease: "power2.inOut" });
+
+                            // 读条结束后，状态变红锁定
+                            setTimeout(() => {
+                                const statusText = document.getElementById('handshake-status');
+                                statusText.textContent = "ISSUED: LV1";
+                                statusText.classList.replace('text-gray-400', 'text-[#D00000]');
+                                statusText.classList.replace('font-bold', 'font-black');
+                            }, 1200);
+                        }}
+                );
+            });
+        }
+
+
+
+    // ==========================================
+    // 🛠️ 临时：开发者一键跳过到 Disclosure 阶段
+    // ==========================================
+    const devSkipBtn = document.getElementById('dev-skip-btn');
+    if (devSkipBtn) {
+        devSkipBtn.addEventListener('click', () => {
+            // 1. 强制杀死所有正在播放的 GSAP 动画，防止串台
+            gsap.killTweensOf("*");
+
+            // 2. 隐藏握手和表单阶段，直接显示协议阶段
+            document.getElementById('handshake-container').classList.add('hidden');
+            document.getElementById('identity-container').classList.add('hidden');
+
+            const discContainer = document.getElementById('disclosure-container');
+            discContainer.classList.remove('hidden');
+            gsap.set(discContainer, { opacity: 1, y: 0 }); // 强制可见
+
+            // 3. 更新顶部全局状态
+            document.getElementById('section-title').textContent = "Disclosure";
+            const statusText = document.getElementById('handshake-status');
+            statusText.textContent = "Pending Signature";
+            statusText.className = "text-xl font-bold uppercase text-gray-400 min-w-[120px] text-right";
+            gsap.set('#handshake-progress-bar', { width: "0%" });
+
+            // 4. 将左侧侧边栏的前两步全部强制绿灯/红灯通过
+            ['step-handshake', 'step-identity'].forEach(id => {
+                const step = document.getElementById(id);
+                if (step) {
+                    const body = step.querySelector('.flex-grow');
+                    const badge = step.querySelector('.ml-auto');
+                    const dot = step.querySelector('.w-3.h-3');
+                    const icon = step.querySelector('svg');
+                    const textSpan = step.querySelector('span');
+
+                    body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 rounded-l-md rounded-r-full shadow-md";
+                    badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                    badge.textContent = "Verified";
+                    dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 z-10";
+                    if(icon) icon.classList.replace('opacity-50', 'opacity-100');
+                    if(textSpan) textSpan.classList.replace('font-bold', 'font-black');
+                }
+            });
+
+            // 5. 将左侧拉伸线直接对准 Disclosure
+            updateSidebarProgress('step-disclosure');
+        });
+
+
+        // ==========================================
+        // 🛠️ 临时：开发者一键跳过到 Role Assignment 阶段
+        // ==========================================
+        const devSkipRoleBtn = document.getElementById('dev-skip-role-btn');
+        if (devSkipRoleBtn) {
+            devSkipRoleBtn.addEventListener('click', () => {
+                // 1. 强制杀死所有正在播放的 GSAP 动画
+                gsap.killTweensOf("*");
+
+                // 2. 隐藏前面的所有阶段
+                document.getElementById('handshake-container').classList.add('hidden');
+                document.getElementById('identity-container').classList.add('hidden');
+                document.getElementById('disclosure-container').classList.add('hidden');
+                document.getElementById('vetting-container').classList.add('hidden');
+
+                // 显示 Role 阶段
+                const roleContainer = document.getElementById('role-container');
+                if (roleContainer) {
+                    roleContainer.classList.remove('hidden');
+                    gsap.set(roleContainer, { opacity: 1, y: 0 }); // 强制可见
+                }
+
+                // 3. 更新顶部全局状态
+                const titleEl = document.getElementById('section-title');
+                if(titleEl) titleEl.textContent = "Role Assignment";
+
+                const statusText = document.getElementById('handshake-status');
+                if(statusText) {
+                    statusText.textContent = "ASSIGNED: INTERN (LV1)";
+                    statusText.className = "text-xl font-black uppercase text-[#D00000] min-w-[120px] text-right";
+                }
+                gsap.set('#handshake-progress-bar', { width: "100%" });
+
+                // 4. 将左侧侧边栏的前四步全部强制绿灯通过
+                ['step-handshake', 'step-identity', 'step-disclosure', 'step-vetting'].forEach(id => {
+                    const step = document.getElementById(id);
+                    if (step) {
+                        const body = step.querySelector('.flex-grow');
+                        const badge = step.querySelector('.ml-auto');
+                        const dot = step.querySelector('.w-3.h-3');
+                        const icon = step.querySelector('svg');
+                        const textSpan = step.querySelector('span');
+
+                        if(body) body.className = "flex-grow bg-[#D00000] text-white p-4 flex items-center gap-3 rounded-l-md rounded-r-full shadow-md";
+                        if(badge) {
+                            badge.className = "ml-auto shrink-0 bg-white text-[#D00000] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mr-1 shadow-sm whitespace-nowrap";
+                            badge.textContent = "Verified";
+                        }
+                        if(dot) dot.className = "w-3 h-3 bg-[#D00000] ring-4 ring-white rounded-full shrink-0 z-10";
+                        if(icon) icon.classList.replace('opacity-50', 'opacity-100');
+                        if(textSpan) textSpan.classList.replace('font-bold', 'font-black');
+                    }
+                });
+
+                // 5. 将左侧拉伸线直接对准 Role Assignment
+                updateSidebarProgress('step-vetting');
+            });
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+});
 
 </script>

@@ -9,16 +9,16 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 <Layout>
 
 	<div class="fixed top-2 right-6 z-50 group">
-		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white font-mono font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
+		<button class="flex items-center gap-2 px-5 py-2.5 bg-[#D00000] text-white  font-bold tracking-wider border-2 border-[#D00000] transition-all duration-300">
 			<Icon name="mdi:web" class="w-5 h-5" />
 			EN / English
 			<Icon name="mdi:chevron-down" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-300" />
 		</button>
 		<div class="absolute right-0 top-full mt-1 w-full bg-white border-2 border-[#D00000] shadow-2xl opacity-0 invisible translate-y-[-10px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 flex flex-col">
-			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-white bg-[#D00000] font-mono font-bold text-center flex justify-center items-center gap-2 border-b-2 border-red-700">
+			<a href={getRelativeLocaleUrl('en', '/')} class="px-4 py-3 text-white bg-[#D00000]  font-bold text-center flex justify-center items-center gap-2 border-b-2 border-red-700">
 				English <Icon name="mdi:check" class="w-4 h-4" />
 			</a>
-			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-[#D00000] font-mono font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center">中文 (ZH)</a>
+			<a href={getRelativeLocaleUrl('zh', '/')} class="px-4 py-3 text-[#D00000]  font-bold hover:bg-red-50 hover:text-[#a00000] transition-colors text-center">中文 (ZH)</a>
 		</div>
 	</div>
 
@@ -42,7 +42,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 
 
-		<div class="w-2/3 min-h-screen bg-white flex flex-col py-12 px-16 relative overflow-hidden">
+		<div class="w-2/3 h-screen bg-white flex flex-col py-12 px-16 relative overflow-hidden">
 
 			<div id="header-container" class="opacity-100 transform-none">
 				<h1 class="text-[#D00000] text-7xl font-black mb-2 tracking-wide uppercase">
@@ -54,98 +54,116 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 				</h1>
 			</div>
 
-			<div id="terminal-panel" class="border-l-4 border-[#D00000] bg-red-50 px-4 py-2 my-4 flex flex-col min-h-[80px]">
-				<div id="terminal-info" class="opacity-100 py-2 transform-none">
-					<p class="text-gray-700 text-lg font-medium">
+			<div id="terminal-panel" class="border-l-4 border-[#D00000] bg-red-50 px-4 py-2 my-4 flex flex-col min-h-[80px] overflow-hidden">
+				<div id="terminal-info" class="opacity-100 py-2 transform-none shrink-0">
+					<p class="text-gray-700 text-xl font-medium">
 						<span class="font-black">Terminal ID:</span> FS-001 / Fractal Recursive Node<br/>
 						<span class="font-black">Clearance:</span> Observer (Temporary)
 					</p>
 				</div>
-				<div id="log-container" class="hidden flex-col justify-end h-full font-mono text-gray-700 overflow-y-auto space-y-[4px] pb-2 text-sm pr-2">
+
+				<div id="log-container" class="hidden flex-col flex-1 min-h-0 text-gray-700 overflow-y-auto space-y-[4px] pb-2 font-normal text-base pr-2">
 				</div>
 			</div>
 
 			<div id="progress-wrapper" class="w-full hidden opacity-0 mt-2 mb-4 shrink-0 flex-col gap-2">
-				<div class="text-[#D00000] font-mono text-xs font-bold tracking-widest uppercase">System Initialization Progress</div>
+				<div class="text-[#D00000] text-lg font-black tracking-widest uppercase">System Initialization Progress</div>
 				<div class="w-full p-1 border border-red-200 bg-red-50/50">
 					<div id="progress-bar" class="h-5 w-full"></div>
 				</div>
 			</div>
 
-			<div id="disclaimer-content" class="opacity-100 flex flex-col flex-grow transform-none">
+			<div id="disclaimer-content" class="opacity-100 flex flex-col flex-1 min-h-0 overflow-y-auto pr-4 transform-none">
 				<div class="mb-4">
-					<h2 class="text-[#D00000] font-black text-xl mb-2 flex items-center gap-2">
-						<Icon name="mdi:warning-box" class="w-6 h-6" />
+					<h2 class="text-[#D00000] font-black text-2xl mb-2 flex items-center gap-2">
+						<Icon name="mdi:warning-box" class="w-8 h-8" />
 						Content Warning:
 					</h2>
-					<p class="text-gray-600 text-base leading-relaxed">
+					<p class="text-gray-600 text-base font-normal leading-relaxed">
 						This game is presented as an "internal system" and may include internal bulletins, incident replays, training text, and unstable narrative structures.
-						Content may cause discomfort, including (but not limited to): <span class="text-gray-800">oppressive atmosphere, being-watched sensations, intrusive dreams, brief derealization, and fixation on—or resistance to—"rules".</span>
+						Content may cause discomfort, including (but not limited to): <span class="text-[#D00000] font-bold ">oppressive atmosphere, being-watched sensations, intrusive dreams, brief derealization, and fixation on—or resistance to—"rules".</span>
 					</p>
 				</div>
 
 				<div class="mb-4">
-					<h2 class="text-[#D00000] font-black text-xl mb-3">By Proceeding, You Acknowledge:</h2>
-					<ul class="space-y-2 text-base text-gray-600">
+					<h2 class="text-[#D00000] font-black text-2xl mb-3">By Proceeding, You Acknowledge:</h2>
+					<ul class="space-y-2 text-lg text-gray-600">
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">Fiction Notice:</span> this is a fictional interactive experience; all persons, organizations, documents, and anomalies are invented.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">Fiction Notice:</span> this is a fictional interactive experience; all persons, organizations, documents, and anomalies are invented.</p>
 						</li>
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">Self-Assessment:</span> you are responsible for your condition. If you feel palpitations, breathing difficulty, intense anxiety, flashbacks, etc., exit immediately and rest.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">Self-Assessment:</span> you are responsible for your condition. If you feel palpitations, breathing difficulty, intense anxiety, flashbacks, etc., exit immediately and rest.</p>
 						</li>
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">Audience Restriction:</span> not recommended for users under 16, those prone to panic/sleep disorders, or with photosensitive seizure risk.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">Audience Restriction:</span> not recommended for users under 16, those prone to panic/sleep disorders, or with photosensitive seizure risk.</p>
 						</li>
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">Safe Environment:</span> use only in a safe, interruptible setting; do not access while driving/operating machinery.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">Safe Environment:</span> use only in a safe, interruptible setting; do not access while driving/operating machinery.</p>
 						</li>
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">Data Logging:</span> anonymous technical logs (device/performance/error data) may be collected for stability and debugging.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">Data Logging:</span> anonymous technical logs (device/performance/error data) may be collected for stability and debugging.</p>
 						</li>
 						<li class="flex gap-2 items-start">
-							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1" />
-							<p><span class="font-bold text-gray-700">No Misuse:</span> do not use terminal content for real-world intimidation, defamation, or "official-document" forgery.</p>
+							<Icon name="mdi:square" class="w-4 h-4 text-[#D00000] shrink-0 mt-1.25" />
+							<p><span class="font-black text-gray-700">No Misuse:</span> do not use terminal content for real-world intimidation, defamation, or "official-document" forgery.</p>
 						</li>
 					</ul>
 				</div>
 
 				<div class="mb-6">
-					<h2 class="text-[#D00000] font-black text-xl mb-3">OBSERVER NOTICE</h2>
+					<h2 class="text-[#D00000] font-black text-2xl mb-3 flex items-center gap-2">
+						OBSERVER NOTICE
+					</h2>
 					<div class="grid grid-cols-2 gap-4 text-base">
-						<div>
-							<p class="text-gray-600">
-								<span class="font-black text-gray-700">&lt;Fractal Shelter/Status&gt;</span><br/>
-								This is a game. Any "orders" are narrative devices only.
-							</p>
+						<div class="bg-[#D00000] text-white p-4 border border-[#B00000] shadow-md hover:bg-[#a00000] transition-colors flex items-center gap-4">
+							<Icon name="mdi:console" class="w-12 h-12 shrink-0 font-white" />
+							<div class="flex flex-col">
+								<span class="font-black font-white tracking-wider text-lg uppercase">Status</span>
+								<p class="font-medium leading-snug">
+									This is a game. Any "orders" are narrative devices only.
+								</p>
+							</div>
 						</div>
-						<div>
-							<p class="text-gray-600">
-								<span class="font-black text-gray-700">&lt;Fractal Shelter/Consent&gt;</span><br/>
-								Proceeding confirms informed consent to psychological-horror elements.
-							</p>
+
+						<div class="bg-[#D00000] text-white p-4 border border-[#B00000] shadow-md hover:bg-[#a00000] transition-colors flex items-center gap-4">
+							<Icon name="mdi:brain" class="w-12 h-12 shrink-0 font-white" />
+							<div class="flex flex-col">
+								<span class="font-black font-white  tracking-wider text-lg uppercase">Consent</span>
+								<p class="font-medium leading-snug">
+									Proceeding confirms informed consent to psychological-horror elements.
+								</p>
+							</div>
 						</div>
-						<div>
-							<p class="text-gray-600">
-								<span class="font-black text-gray-700">&lt;Fractal Shelter/Use&gt;</span><br/>
-								Do not use this game as evidence, instruction, or authority in real life.
-							</p>
+
+						<div class="bg-[#D00000] text-white p-4 border border-[#B00000] shadow-md hover:bg-[#a00000] transition-colors flex items-center gap-4">
+							<Icon name="mdi:scale-balance" class="w-12 h-12 shrink-0 font-white" />
+							<div class="flex flex-col">
+								<span class="font-black font-white  tracking-wider text-lg uppercase">Use</span>
+								<p class="font-medium leading-snug">
+									Do not use this game as evidence, instruction, or authority in real life.
+								</p>
+							</div>
 						</div>
-						<div>
-							<p class="text-gray-600">
-								<span class="font-black text-gray-700">&lt;Fractal Shelter/Exit&gt;</span><br/>
-								You may terminate the session at any time. The system will not prevent you.
-							</p>
+
+						<div class="bg-[#D00000] text-white p-4 border border-[#B00000] shadow-md hover:bg-[#a00000] transition-colors flex items-center gap-4">
+							<Icon name="mdi:door-open" class="w-12 h-12 shrink-0 font-white" />
+							<div class="flex flex-col">
+								<span class="font-black font-white  tracking-wider text-lg uppercase">Exit</span>
+								<p class="font-medium leading-snug">
+									You may terminate the session at any time. The system will not prevent you.
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="mb-4 border-t border-gray-200 pt-4">
-					<p class="text-gray-500 text-sm italic">
+					<p class="text-gray-500 text-base italic">
 						<span class="text-[#D00000] font-semibold not-italic">NOTE:</span> A fractal is a geometric figure in which each part has the same statistical character as the whole.<br/>
 						<span class="text-gray-600">Each rule you read alters the next iteration of what you are shown.</span>
 					</p>
@@ -331,23 +349,37 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			tl.to(['#disclaimer-content', '#terminal-info', '#header-container'], {
 				opacity: 0,
 				y: -20,
-				duration: 0.5,
+				duration: 0.4, // 稍微调快一点，节奏更紧凑
 				ease: "power2.inOut",
 				onComplete: () => {
+					// 1. 隐藏旧元素
 					document.getElementById('disclaimer-content').classList.add('hidden');
 					document.getElementById('terminal-info').classList.add('hidden');
-					document.getElementById('log-container').classList.remove('hidden');
-					document.getElementById('log-container').classList.add('flex');
-					document.getElementById('progress-wrapper').classList.remove('hidden');
-					document.getElementById('progress-wrapper').classList.add('flex');
 
+					// 2. 显示新元素
+					const logContainer = document.getElementById('log-container');
+					logContainer.classList.remove('hidden');
+					logContainer.classList.add('flex');
+
+					const progressWrapper = document.getElementById('progress-wrapper');
+					progressWrapper.classList.remove('hidden');
+					progressWrapper.classList.add('flex');
+
+					// 3. 替换标题
 					document.getElementById('title-main').textContent = "INITIALIZATION";
 					document.getElementById('title-sub').textContent = "Terminal Access";
+
+					// 🔥 THE FIX: 核心修复！在协议区消失的同一瞬间，立刻让终端面板接管剩余空间
+					// 这样底部版权信息就不会往上跳了
+					gsap.set('#terminal-panel', { flexGrow: 1 });
 				}
 			})
+				// 4. 让新的标题浮现
 				.to('#header-container', { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
-				.to('#terminal-panel', { flexGrow: 1, paddingTop: "2rem", paddingBottom: "2rem", duration: 0.8, ease: "power3.inOut" }, "-=0.2")
-				.to('#progress-wrapper', { opacity: 1, duration: 0.4 })
+				// 🔥 注意这里去掉了 flexGrow: 1 的动画，只做上下边距的动画展开
+				.to('#terminal-panel', { paddingTop: "2rem", paddingBottom: "2rem", duration: 0.6, ease: "power3.inOut" }, "-=0.2")
+				// 5. 进度条浮现
+				.to('#progress-wrapper', { opacity: 1, duration: 0.4 }, "<")
 				.call(() => {
 					isTerminalRunning = true;
 					startLogSequence();
@@ -459,8 +491,11 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 				if (line.includes("WARNING") || line.includes("ERROR")) { tSpeed = 10; postDelay = 350; }
 				else if (line.includes("SUCCESS") || line.includes("COMPLETE")) { postDelay = 200; }
 
+				let scrollInterval = null; // 1. 在外面声明定时器
+
 				await new Promise((resolve) => {
 					resolveActiveLine = () => {
+						if (scrollInterval) clearInterval(scrollInterval); // 2. 确保快进/跳过时清理干净
 						if (activeTyped) {
 							activeTyped.destroy();
 							activeTyped = null;
@@ -475,6 +510,9 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 						resolveActiveLine = null;
 						resolve();
 					} else {
+						// 3. 正常开启定时器
+						scrollInterval = setInterval(() => { logContainer.scrollTop = logContainer.scrollHeight; }, 50);
+
 						activeTyped = new Typed(typeTarget, {
 							strings: [formattedLine],
 							typeSpeed: tSpeed,
@@ -482,14 +520,13 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 							cursorChar: '█',
 							contentType: 'html',
 							onStringTyped: (pos, self) => {
+								if (scrollInterval) clearInterval(scrollInterval); // 4. 打字彻底结束时销毁它
 								if (i < totalSteps - 1) self.cursor.remove();
 								activeTyped = null;
 								resolveActiveLine = null;
 								resolve();
 							}
 						});
-						const scrollInterval = setInterval(() => { logContainer.scrollTop = logContainer.scrollHeight; }, 50);
-						activeTyped.options.onComplete = () => clearInterval(scrollInterval);
 					}
 				});
 
@@ -500,7 +537,6 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 			if (!isPageActive) return;
 
-			await sleep(400);
 			const enterBtnWrap = document.createElement('div');
 			enterBtnWrap.className = "mt-4 flex";
 
@@ -509,10 +545,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 			enterBtn.textContent = "[ ENTER ]";
 
 			enterBtn.onclick = () => {
-				document.body.style.overflow = 'hidden';
 				enterBtn.disabled = true;
-				enterBtn.textContent = "[ OVERRIDING... ]";
-				enterBtn.classList.remove('animate-pulse');
 
 				const logoEl = document.getElementById('hero-logo');
 				if (!logoEl) {
@@ -521,8 +554,15 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 				}
 
 				const logoRect = logoEl.getBoundingClientRect();
-				document.body.appendChild(logoEl);
 
+				const placeholder = document.createElement('div');
+				placeholder.style.width = logoRect.width + 'px';
+				placeholder.style.height = logoRect.height + 'px';
+				placeholder.style.display = window.getComputedStyle(logoEl).display; // 保持原本的 display 属性
+				logoEl.parentNode.insertBefore(placeholder, logoEl);
+
+				// 现在可以安全地把带有 transition:name 的原 Logo 拔出来，放到 body 下面
+				document.body.appendChild(logoEl);
 				gsap.set(logoEl, {
 					position: "fixed",
 					left: logoRect.left,
@@ -534,12 +574,14 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 					transformOrigin: "50% 50%"
 				});
 
+				// 计算 Logo 飞向屏幕正中央的目标位置
 				const targetX = (window.innerWidth / 2) - (logoRect.left + logoRect.width / 2);
 				const targetY = (window.innerHeight / 2) - (logoRect.top + logoRect.height / 2) - 200;
 
+				// 创建终极标题元素
 				const textEl = document.createElement('div');
 				textEl.textContent = "FRACTAL SHELTER";
-				textEl.className = "fixed left-1/2 top-1/2 -translate-x-1/2 translate-y-[120px] text-[#D00000] text-8xl font-black tracking-[0.1em] uppercase opacity-0 z-50 pointer-events-none ";
+				textEl.className = "fixed left-1/2 top-1/2 -translate-x-1/2 translate-y-[120px] text-[#D00000] text-9xl font-black tracking-[0.1em] uppercase whitespace-nowrap opacity-0 z-50 pointer-events-none";
 				document.body.appendChild(textEl);
 
 				const tl = gsap.timeline({
@@ -548,28 +590,22 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 					}
 				});
 
-				tl.to(['.w-2\\/3.bg-white', '.sticky > div'], {
-					opacity: 0,
-					duration: 0.4,
-					ease: "power2.inOut"
-				})
-					.to('.w-1\\/3.bg-\\[\\#D00000\\]', {
-						backgroundColor: '#FFFFFF',
-						width: "100%",
-						duration: 0.6,
-						ease: "power3.inOut"
+				// 1. 让原页面所有其他元素（#main-interface）淡出，背景变白
+				tl.to(document.body, { backgroundColor: "#ffffff", duration: 0.4, ease: "power2.inOut" })
+					.to('#main-interface', {
+						opacity: 0,
+						duration: 0.4,
+						ease: "power2.inOut",
+						// 等页面全白了再去隐藏滚动条，避免闪烁
+						onComplete: () => { document.body.style.overflow = 'hidden'; }
 					}, "<")
-					.to(logoEl, {
-						x: targetX,
-						y: targetY,
-						scale: 10,
-						duration: 0.8,
-						ease: "power3.inOut"
-					}, "<")
+					// 2. 让【原 Logo】飞向中央并放大 (保留了它的 transition:name)
+					.to(logoEl, { x: targetX, y: targetY, scale: 10, duration: 0.8, ease: "power3.inOut" })
+					// 3. 终极标题浮现
 					.to(textEl, { opacity: 1, y: "+=10", duration: 0.5, ease: "power2.out" })
-					.to(textEl, { opacity: 1, duration: 0.8 })
-					.to(textEl, { opacity: 0, scale: 0.9, duration: 0.3, ease: "power2.in" })
-					.to(logoEl, { opacity: 0, duration: 0.3 }, "<");
+					.to(textEl, { opacity: 1, duration: 0.8 }) // 保持一会儿
+					// 4. 白场收尾：注意！这里我们只让文本淡出，保留 logoEl
+					.to(textEl, { opacity: 0, duration: 0.2, ease: "power2.inOut" });
 			};
 
 			enterBtnWrap.appendChild(enterBtn);
